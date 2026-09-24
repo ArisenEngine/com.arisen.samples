@@ -67,3 +67,8 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# Asset metadata and Wavefront meshes collide with the compiled-artifact patterns above (*.obj):
+# an OBJ mesh is authored content, not a linker object file. Asset roots are re-included so content
+# is never silently dropped from the repository.
+!**/Assets/**/*.obj
