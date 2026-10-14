@@ -19,3 +19,16 @@ Samples:
   ExpectedVisual: Near/mid/far vegetation over streamed terrain, an upright lit horizon, and stable cascaded shadows.
   Gate: world-streaming
   Artifact: world-streaming-summary-latest.json
+- Id: lantern-world
+  Description: Lantern showcase world - a compact streamed region around the lantern content.
+  World:
+    Guid: 9a9b4db5-c0a8-4f2e-8929-89464bea9d51
+    PackageId: com.arisen.samples
+  Packages:
+  - com.arisen.terrain
+  - com.arisen.terrain.generic-renderpipeline
+  - com.arisen.vegetation
+  - com.arisen.vegetation.generic-renderpipeline
+  ExpectedVisual: The lantern world's streamed cells rendered in place of the previous content.
+  Gate: sample-switch
+  Artifact: sample-switch-summary-Samples-latest.json

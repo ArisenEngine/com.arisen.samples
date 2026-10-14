@@ -43,11 +43,15 @@ needs, the expected visual, and the gate scenario and artifact that prove it.
 - A launch resolves an entry with `--startup-sample <id>`; the shell activates the entry's scene or
   world exactly as it would a directly named target.
 - The cook follows the selection: cooking a sample closes over the catalogue and every entry's
-  content, so a cooked-only profile can boot any declared sample without a source fallback.
+  content, and a profile that declares the gallery role cooks the whole catalogue, so a cooked-only
+  profile can boot any declared sample without a source fallback.
+- A world-backed entry can also be selected inside the running process: the sample-switch smoke
+  drives every world-backed entry through the runtime world-load path and asserts each one becomes
+  the active world, which is the capability the hub's browsing layer is built on.
 
 ## Status
 
-The catalogue, the hub scene, the `Samples` profile, and the `--startup-sample <id>` launch are in
-place. The hub's browsing layer and the per-sample gate runners are the next items; the plan and the
-acceptance rules live in the engine repository at
+The catalogue, the hub scene, the `Samples` profile, the `--startup-sample <id>` launch, and
+in-process switching between content samples are in place. The hub's browsing layer and the
+per-sample gate runners are the next items; the plan and the acceptance rules live in the engine repository at
 `Arisen\Docs\Architecture\ArisenDevelopmentRoadmap.md`.
