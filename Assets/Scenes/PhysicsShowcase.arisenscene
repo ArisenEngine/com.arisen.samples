@@ -1,0 +1,140 @@
+# The physics capability sample: static geometry plus rigid bodies that fall, collide, and settle.
+# Every collision shape is authored explicitly next to the mesh that shows it, with the shape
+# center offset because these meshes have their origin at their base.
+Version: 2
+Name: Physics Showcase
+ComponentSchemas:
+- TypeId: 1
+  Name: Transform
+  Version: 1
+  Required: true
+- TypeId: 2
+  Name: Camera
+  Version: 2
+  Required: true
+- TypeId: 3
+  Name: MeshRenderer
+  Version: 1
+  Required: true
+- TypeId: 4
+  Name: DirectionalLight
+  Version: 1
+  Required: true
+- TypeId: 7
+  Name: Environment
+  Version: 1
+  Required: true
+- TypeId: 1346918722
+  Name: RigidBody
+  Version: 1
+  Required: false
+Entities:
+- Guid: 42000000-0000-0000-0000-000000000001
+  Name: Main Camera
+  Transform:
+    Position: { X: 0.0, Y: 3.5, Z: -9.0 }
+    Rotation: { X: 0.1045, Y: 0.0, Z: 0.0, W: 0.9945 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  Camera:
+    VerticalFov: 45.0
+    NearPlane: 0.1
+    FarPlane: 200.0
+    IsPerspective: true
+- Guid: 42000000-0000-0000-0000-000000000002
+  Name: Showcase Key Light
+  DirectionalLight:
+    Direction: { X: -0.35, Y: 0.8, Z: -0.48 }
+    Color: { X: 1.0, Y: 0.95, Z: 0.87 }
+    Intensity: 1.6
+    AmbientIntensity: 0.12
+    Enabled: true
+- Guid: 42000000-0000-0000-0000-000000000003
+  Name: Showcase Environment
+  Environment:
+    SkyColor: { X: 0.04, Y: 0.12, Z: 0.22 }
+    HorizonColor: { X: 0.5, Y: 0.63, Z: 0.72 }
+    GroundColor: { X: 0.05, Y: 0.06, Z: 0.07 }
+    AmbientColor: { X: 0.4, Y: 0.5, Z: 0.62 }
+    SkyIntensity: 0.95
+    AmbientIntensity: 0.24
+    Enabled: true
+- Guid: 42000000-0000-0000-0000-000000000004
+  Name: Showcase Floor
+  Transform:
+    Position: { X: 0.0, Y: 0.0, Z: 0.0 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 2.0, Y: 1.0, Z: 2.0 }
+  MeshRenderer:
+    Mesh: { Guid: 0fed982b-5130-430e-860b-dc9c7284b8c1, PackageId: com.arisen.samples }
+    Material: { Guid: e87b0335-5689-45a0-9fe1-455a01b59a20, PackageId: com.arisen.samples }
+    Visible: true
+  RigidBody:
+    Motion: Static
+    Shape: Box
+    HalfExtents: { X: 10.0, Y: 0.5, Z: 10.0 }
+    Center: { X: 0.0, Y: -0.5, Z: 0.0 }
+    Friction: 0.6
+- Guid: 42000000-0000-0000-0000-000000000005
+  Name: Resting Pedestal
+  Transform:
+    Position: { X: -4.0, Y: 0.0, Z: -1.0 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  MeshRenderer:
+    Mesh: { Guid: ed26e5c7-77ae-4cd7-b4ec-cb02ea6bac33, PackageId: com.arisen.samples }
+    Material: { Guid: a2dd1381-3958-4480-837b-35ffe6dd15c0, PackageId: com.arisen.samples }
+    Visible: true
+  RigidBody:
+    Motion: Static
+    Shape: Box
+    HalfExtents: { X: 0.72, Y: 0.24, Z: 0.72 }
+    Center: { X: 0.0, Y: 0.24, Z: 0.0 }
+    Friction: 0.6
+- Guid: 42000000-0000-0000-0000-000000000006
+  Name: Falling Teapot
+  Transform:
+    Position: { X: 0.0, Y: 6.0, Z: 0.0 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  MeshRenderer:
+    Mesh: { Guid: 7300d793-8cd9-4983-8035-e99aa92e9449, PackageId: com.arisen.samples }
+    Material: { Guid: a2122786-c40a-41f2-bf35-1f5cbc4d39c2, PackageId: com.arisen.samples }
+    Visible: true
+  RigidBody:
+    Motion: Dynamic
+    Shape: Box
+    HalfExtents: { X: 2.0425, Y: 1.0, Z: 1.27 }
+    Center: { X: 0.1375, Y: 1.0, Z: 0.0 }
+    Friction: 0.5
+- Guid: 42000000-0000-0000-0000-000000000007
+  Name: Dropped Teapot
+  Transform:
+    Position: { X: 5.2, Y: 9.5, Z: 0.6 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  MeshRenderer:
+    Mesh: { Guid: 7300d793-8cd9-4983-8035-e99aa92e9449, PackageId: com.arisen.samples }
+    Material: { Guid: a2122786-c40a-41f2-bf35-1f5cbc4d39c2, PackageId: com.arisen.samples }
+    Visible: true
+  RigidBody:
+    Motion: Dynamic
+    Shape: Box
+    HalfExtents: { X: 2.0425, Y: 1.0, Z: 1.27 }
+    Center: { X: 0.1375, Y: 1.0, Z: 0.0 }
+    Friction: 0.5
+- Guid: 42000000-0000-0000-0000-000000000008
+  Name: Dropped Pedestal
+  Transform:
+    Position: { X: -5.2, Y: 12.0, Z: 0.8 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  MeshRenderer:
+    Mesh: { Guid: ed26e5c7-77ae-4cd7-b4ec-cb02ea6bac33, PackageId: com.arisen.samples }
+    Material: { Guid: a2dd1381-3958-4480-837b-35ffe6dd15c0, PackageId: com.arisen.samples }
+    Visible: true
+  RigidBody:
+    Motion: Dynamic
+    Shape: Box
+    HalfExtents: { X: 0.72, Y: 0.24, Z: 0.72 }
+    Center: { X: 0.0, Y: 0.24, Z: 0.0 }
+    Friction: 0.5

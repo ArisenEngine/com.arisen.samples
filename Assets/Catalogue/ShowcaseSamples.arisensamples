@@ -32,3 +32,13 @@ Samples:
   ExpectedVisual: The lantern world's streamed cells rendered in place of the previous content.
   Gate: sample-switch
   Artifact: sample-switch-summary-Samples-latest.json
+- Id: physics-showcase
+  Description: Rigid bodies falling onto static geometry - the D2 slice authored as scene components.
+  Scene:
+    Guid: b7e2c4a9-8f31-4d6e-a0c5-93d47f1b6e28
+    PackageId: com.arisen.samples
+  Packages:
+  - com.arisen.physics
+  ExpectedVisual: Authored bodies fall, collide with the floor and the pedestal, and come to rest.
+  Gate: scene-smoke
+  Artifact: visual-summary-PhysicsShowcase-latest.json
