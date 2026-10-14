@@ -1,0 +1,21 @@
+# The gallery's catalogue. One entry per sample; every entry declares the content it boots, the
+# packages it needs, and the gate that proves its expected visual. The hub browses this list, and
+# a direct launch selects an entry with --startup-sample <id>.
+Version: 1
+Samples:
+- Id: mistfall-valley
+  Description: Regional outdoor world - streamed terrain, vegetation, cascaded shadows, atmosphere.
+  Scene:
+    Guid: 6c761a9d-2d06-562e-9779-7748e8afe4d3
+    PackageId: com.arisen.samples
+  World:
+    Guid: b50c4c80-0720-4b63-b89b-af2203063180
+    PackageId: com.arisen.samples
+  Packages:
+  - com.arisen.terrain
+  - com.arisen.terrain.generic-renderpipeline
+  - com.arisen.vegetation
+  - com.arisen.vegetation.generic-renderpipeline
+  ExpectedVisual: Near/mid/far vegetation over streamed terrain, an upright lit horizon, and stable cascaded shadows.
+  Gate: world-streaming
+  Artifact: world-streaming-summary-latest.json

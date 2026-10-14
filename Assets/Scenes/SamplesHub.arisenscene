@@ -1,0 +1,80 @@
+# The gallery's entry scene. It is deliberately empty of content: the hub presents the catalogue,
+# and each sample brings its own scene and world. The camera is the viewing pose the shell's
+# interactive camera takes over at runtime.
+Version: 2
+Name: Samples Hub
+ComponentSchemas:
+- TypeId: 1
+  Name: Transform
+  Version: 1
+  Required: true
+- TypeId: 2
+  Name: Camera
+  Version: 2
+  Required: true
+- TypeId: 4
+  Name: DirectionalLight
+  Version: 1
+  Required: true
+- TypeId: 7
+  Name: Environment
+  Version: 1
+  Required: true
+Entities:
+- Guid: 41000000-0000-0000-0000-000000000001
+  Name: Main Camera
+  Transform:
+    Position:
+      X: 0.0
+      Y: 1.7
+      Z: -4.0
+    Rotation:
+      X: 0.0436194
+      Y: 0.0
+      Z: 0.0
+      W: 0.9990482
+    Scale:
+      X: 1.0
+      Y: 1.0
+      Z: 1.0
+  Camera:
+    VerticalFov: 45.0
+    NearPlane: 0.1
+    FarPlane: 500.0
+    IsPerspective: true
+- Guid: 41000000-0000-0000-0000-000000000002
+  Name: Hub Key Light
+  DirectionalLight:
+    Direction:
+      X: -0.35
+      Y: 0.8
+      Z: -0.48
+    Color:
+      X: 1.0
+      Y: 0.95
+      Z: 0.87
+    Intensity: 1.6
+    AmbientIntensity: 0.12
+    Enabled: true
+- Guid: 41000000-0000-0000-0000-000000000003
+  Name: Hub Environment
+  Environment:
+    SkyColor:
+      X: 0.04
+      Y: 0.12
+      Z: 0.22
+    HorizonColor:
+      X: 0.5
+      Y: 0.63
+      Z: 0.72
+    GroundColor:
+      X: 0.05
+      Y: 0.06
+      Z: 0.07
+    AmbientColor:
+      X: 0.4
+      Y: 0.5
+      Z: 0.62
+    SkyIntensity: 0.95
+    AmbientIntensity: 0.24
+    Enabled: true
