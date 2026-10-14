@@ -1,0 +1,147 @@
+Version: 2
+TerrainGuid: 275cb2a7-ddce-24ac-6640-edd5aea26427
+Name: "Mistfall Valley World Terrain"
+WorldPlacement: { X: -512.0, Y: 0, Z: -512.0 }
+SampleSpacing: { X: 0.5, Z: 0.5 }
+HeightRange: { Min: 0, Max: 56.0 }
+HeightSource:
+  Path: "Height/MistfallValley.pgm"
+  Format: Pgm16BigEndianScalar
+WeightSource:
+  Path: "MistfallValley.ariweights"
+  Format: Rgba8Hex
+TileResolution: 257
+BorderPolicy: SharedEdgeSamples
+TileOrigin: { X: 0, Z: 0 }
+LayerSet:
+  Guid: 5dcaa6bd-2b51-498d-9fa9-bd68f4642761
+  PackageId: "com.arisen.samples"
+GeneratedTiles:
+- Coordinate: { X: 0, Z: 0 }
+  Guid: 5d6df7ed-16a1-6863-36cd-b8eda01c460e
+- Coordinate: { X: 1, Z: 0 }
+  Guid: 6ac1428e-6aea-7239-dc6e-34855a584229
+- Coordinate: { X: 2, Z: 0 }
+  Guid: d1881d5a-a22b-6d73-2167-041a9f1d6445
+- Coordinate: { X: 3, Z: 0 }
+  Guid: ac3765a2-5328-3b4b-16df-94e244224fcd
+- Coordinate: { X: 4, Z: 0 }
+  Guid: b5ac460e-5e6b-a910-994d-d1387377b7f6
+- Coordinate: { X: 5, Z: 0 }
+  Guid: 0cf8d40c-2172-795a-15bc-4cf0644e056b
+- Coordinate: { X: 6, Z: 0 }
+  Guid: 2f2dc7c8-d9bc-73d1-ff86-8569f7f236bf
+- Coordinate: { X: 7, Z: 0 }
+  Guid: 28c67b2c-dfa9-7e12-bb0c-4122ec810536
+- Coordinate: { X: 0, Z: 1 }
+  Guid: 29ec1644-bcf2-99bf-9676-ce3027f8f6a4
+- Coordinate: { X: 1, Z: 1 }
+  Guid: 95134202-cef5-0df9-d9c2-5ad0420b97ef
+- Coordinate: { X: 2, Z: 1 }
+  Guid: 14d2f9c8-befc-cd52-b739-f10980444a92
+- Coordinate: { X: 3, Z: 1 }
+  Guid: 206c266b-d477-6280-bdd9-6ff65b16c911
+- Coordinate: { X: 4, Z: 1 }
+  Guid: 99624032-7867-d682-5c89-268eeab16e24
+- Coordinate: { X: 5, Z: 1 }
+  Guid: fd4507e4-690f-0e3c-d95c-6cda5bb1fc3a
+- Coordinate: { X: 6, Z: 1 }
+  Guid: 15010d12-4a9b-68e2-da72-a9ef2302870c
+- Coordinate: { X: 7, Z: 1 }
+  Guid: 9429f11d-909e-3e94-231a-386bb8f26c77
+- Coordinate: { X: 0, Z: 2 }
+  Guid: 3ea8fc3c-f057-d3c4-d242-9546b877d3fb
+- Coordinate: { X: 1, Z: 2 }
+  Guid: 0e4dfabc-6670-ad9d-d952-565b1f25f368
+- Coordinate: { X: 2, Z: 2 }
+  Guid: 95ea66e5-26a5-3068-ac5a-38351736127e
+- Coordinate: { X: 3, Z: 2 }
+  Guid: fdd6f60f-33a4-6d6d-b923-dfc5ca8990ab
+- Coordinate: { X: 4, Z: 2 }
+  Guid: 99d7fdf1-9f86-71b0-ff57-ccf66d60d98d
+- Coordinate: { X: 5, Z: 2 }
+  Guid: c657e3b5-91af-02b1-4132-943637223c30
+- Coordinate: { X: 6, Z: 2 }
+  Guid: 28e3fe0a-bd33-b523-f5bc-a40cb1ce8559
+- Coordinate: { X: 7, Z: 2 }
+  Guid: b540fa20-bac1-d0e4-dd19-5b7d5c490624
+- Coordinate: { X: 0, Z: 3 }
+  Guid: 87837d33-317e-6b2d-d4bc-c63fa87f8779
+- Coordinate: { X: 1, Z: 3 }
+  Guid: 275b4889-581d-6fb0-18a2-4d28ad61e488
+- Coordinate: { X: 2, Z: 3 }
+  Guid: 426bed3d-d8c5-73b6-e2b2-f9b67919b852
+- Coordinate: { X: 3, Z: 3 }
+  Guid: fa8ed134-04e5-dec1-b562-08d9b1ac523b
+- Coordinate: { X: 4, Z: 3 }
+  Guid: 8e5fc93a-59ec-bc20-52eb-1d3ece1eee0f
+- Coordinate: { X: 5, Z: 3 }
+  Guid: f7c521e5-62d5-d756-15cc-260a9991d086
+- Coordinate: { X: 6, Z: 3 }
+  Guid: 1d105a63-46fc-6722-6498-ab1f5f36bd84
+- Coordinate: { X: 7, Z: 3 }
+  Guid: 7d97ca72-3936-d383-93b9-9793795e2b1d
+- Coordinate: { X: 0, Z: 4 }
+  Guid: 60a48371-7b69-27fd-9626-8c29acebf797
+- Coordinate: { X: 1, Z: 4 }
+  Guid: 73592817-2db9-f1d6-da73-c906ae7e79c8
+- Coordinate: { X: 2, Z: 4 }
+  Guid: 0a942e6e-d7fb-d981-3caa-6297d2600bfe
+- Coordinate: { X: 3, Z: 4 }
+  Guid: 824752bc-7d4f-e103-42bf-8bc5aee3e3db
+- Coordinate: { X: 4, Z: 4 }
+  Guid: 4d466b07-dbb6-a147-a18d-b3fa36269985
+- Coordinate: { X: 5, Z: 4 }
+  Guid: b2d10b0e-e7f7-f539-4d23-26891c34b1ef
+- Coordinate: { X: 6, Z: 4 }
+  Guid: a79d93b7-7edf-1a8c-1a53-355a51075d21
+- Coordinate: { X: 7, Z: 4 }
+  Guid: 039569c3-a25a-8783-4523-ad867458cb37
+- Coordinate: { X: 0, Z: 5 }
+  Guid: 1bee4547-74fb-c578-7733-b760bec745e3
+- Coordinate: { X: 1, Z: 5 }
+  Guid: f6580528-93ff-3d7b-8568-6383247fa79c
+- Coordinate: { X: 2, Z: 5 }
+  Guid: 9e81fb3c-0eaa-67d6-fa2f-10828cc546b0
+- Coordinate: { X: 3, Z: 5 }
+  Guid: 22e539fd-65a4-20e3-666a-ea713993cf83
+- Coordinate: { X: 4, Z: 5 }
+  Guid: f3962e51-80f4-1b8a-995b-8324607d653f
+- Coordinate: { X: 5, Z: 5 }
+  Guid: 18152448-fcf5-e068-1559-d40abcabb74e
+- Coordinate: { X: 6, Z: 5 }
+  Guid: 17902299-e9a6-b119-2804-9cc8ccf94353
+- Coordinate: { X: 7, Z: 5 }
+  Guid: e33b8829-b7be-b860-0730-253f7898b870
+- Coordinate: { X: 0, Z: 6 }
+  Guid: 82da7cfb-f974-1a03-b816-1545aca81ea0
+- Coordinate: { X: 1, Z: 6 }
+  Guid: 4d395673-99e9-8232-6bc8-69cc9c560a45
+- Coordinate: { X: 2, Z: 6 }
+  Guid: c4cd5598-6a5b-8413-e4ff-20e0ce843f6c
+- Coordinate: { X: 3, Z: 6 }
+  Guid: bc908714-bc61-b3d3-e075-2cfc0017822d
+- Coordinate: { X: 4, Z: 6 }
+  Guid: d2b4ddb5-67e4-2675-bff3-9aa21b2d080b
+- Coordinate: { X: 5, Z: 6 }
+  Guid: 7d9151b0-dfb5-0436-2a92-116367c7aa4d
+- Coordinate: { X: 6, Z: 6 }
+  Guid: 39cd4afe-74e0-5a63-2de1-b819c7698d80
+- Coordinate: { X: 7, Z: 6 }
+  Guid: a7d557df-6ed4-9455-d6e9-582b993ba1a2
+- Coordinate: { X: 0, Z: 7 }
+  Guid: cb6df05b-bf71-5aa0-79f6-c3a8b0386ff0
+- Coordinate: { X: 1, Z: 7 }
+  Guid: adc72678-e55f-2e79-2572-bd61ee5822f7
+- Coordinate: { X: 2, Z: 7 }
+  Guid: d0fd53d0-ad5a-19c7-e085-5b0a289da5d7
+- Coordinate: { X: 3, Z: 7 }
+  Guid: 621e9d50-3a4e-4fa5-aedc-39baefff7766
+- Coordinate: { X: 4, Z: 7 }
+  Guid: f89fb9a7-ae46-6a55-5147-2e32eed3402e
+- Coordinate: { X: 5, Z: 7 }
+  Guid: f8d58516-7351-3dd1-276f-37d317baafe6
+- Coordinate: { X: 6, Z: 7 }
+  Guid: 729c79be-ac62-79b7-a1ac-710c59b6fbef
+- Coordinate: { X: 7, Z: 7 }
+  Guid: 317d5cdf-be95-476f-20ea-e9e959155636

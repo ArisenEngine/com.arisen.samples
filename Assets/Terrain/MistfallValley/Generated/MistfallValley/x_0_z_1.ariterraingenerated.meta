@@ -1,0 +1,9 @@
+Guid: 29ec1644-bcf2-99bf-9676-ce3027f8f6a4
+AssetType: "TerrainTile"
+Importer: "ArisenTerrainTileImporter"
+Generated:
+  SourceGuid: 275cb2a7-ddce-24ac-6640-edd5aea26427
+  SourcePackageId: "com.arisen.samples"
+  ChildKind: "terrain-tile"
+  ChildKey: "x=0;z=1"
+  GeneratedByImporter: "ArisenTerrainTileImporter"

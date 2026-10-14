@@ -1,0 +1,90 @@
+Version: 2
+Name: Scene_0
+ComponentSchemas:
+- TypeId: 1
+  Name: Transform
+  Version: 1
+  Required: true
+- TypeId: 3
+  Name: MeshRenderer
+  Version: 1
+  Required: true
+Entities:
+- Guid: fdb01205-c10e-3360-93ee-d6c372848938
+  Name: LanternPole_Body
+  Transform:
+    Position:
+      X: 3.823154
+      Y: 13.01603
+      Z: 0
+    Rotation:
+      X: 0
+      Y: 1
+      Z: 0
+      W: 0
+    Scale:
+      X: 1
+      Y: 1
+      Z: 1
+  MeshRenderer:
+    Mesh:
+      Guid: a5f3b436-a237-cb16-099c-02e6789800ff
+      PackageId: com.arisen.samples
+    Material:
+      Guid: f1ba64aa-b6cf-b1c5-1984-d3582ddb047d
+      PackageId: com.arisen.samples
+    FirstSubmeshIndex: 0
+    SubmeshCount: 1
+    Visible: true
+- Guid: a8b37811-f8e0-caa6-083e-244b4004a411
+  Name: LanternPole_Chain
+  Transform:
+    Position:
+      X: 9.582001
+      Y: 21.03787
+      Z: 0
+    Rotation:
+      X: 0
+      Y: 1
+      Z: 0
+      W: 0
+    Scale:
+      X: 1
+      Y: 1
+      Z: 1
+  MeshRenderer:
+    Mesh:
+      Guid: 6ad985f3-81db-5a0c-3851-97f72e87f1d7
+      PackageId: com.arisen.samples
+    Material:
+      Guid: f1ba64aa-b6cf-b1c5-1984-d3582ddb047d
+      PackageId: com.arisen.samples
+    FirstSubmeshIndex: 0
+    SubmeshCount: 1
+    Visible: true
+- Guid: 0d12d57c-d944-37d2-ae81-a621211bba27
+  Name: LanternPole_Lantern
+  Transform:
+    Position:
+      X: 9.582007
+      Y: 18.00915
+      Z: 0
+    Rotation:
+      X: 0
+      Y: 1
+      Z: 0
+      W: 0
+    Scale:
+      X: 1
+      Y: 1
+      Z: 1
+  MeshRenderer:
+    Mesh:
+      Guid: 2b9ad08a-122f-9ab0-da34-bb53d87ef23a
+      PackageId: com.arisen.samples
+    Material:
+      Guid: f1ba64aa-b6cf-b1c5-1984-d3582ddb047d
+      PackageId: com.arisen.samples
+    FirstSubmeshIndex: 0
+    SubmeshCount: 1
+    Visible: true

@@ -1,0 +1,6 @@
+Version: 1
+RecipeGuid: 55a6be6f-e9ee-5d96-f84d-98ee0193c1bc
+Role: cluster
+Guid: fd8cbfdb-b32d-7114-3ffe-d7a115e7c100
+AssetType: VegetationCluster
+PlacementContentHash: 5a9f373ec44e2bd8b8e2cca9445993b941f2dfac515b6beb94e0704da18026c7

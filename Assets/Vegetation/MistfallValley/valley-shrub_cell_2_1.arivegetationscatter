@@ -1,0 +1,9 @@
+Version: 1
+RecipeGuid: f41bb733-2c03-7af4-20bb-2896a5537f96
+World: { Guid: b50c4c80-0720-4b63-b89b-af2203063180, PackageId: com.arisen.samples }
+Biome: { Guid: c0a92f10-0eb9-4d24-b729-7d0f38313001, PackageId: com.arisen.samples }
+TerrainRoot: { Guid: 275cb2a7-ddce-24ac-6640-edd5aea26427, PackageId: com.arisen.samples }
+Cell: { X: 2, Y: 0, Z: 1, Layer: surface }
+EntryId: valley-shrub
+UnscaledConservativeRadius: 1.2
+Exclusions: []

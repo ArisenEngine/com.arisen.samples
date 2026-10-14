@@ -1,0 +1,9 @@
+Guid: bd6c9a2c-f62f-bc12-3a72-12feb9f0137d
+AssetType: "TerrainWeightSource"
+Importer: "ArisenTerrainWeightSourceImporter"
+Generated:
+  SourceGuid: 275cb2a7-ddce-24ac-6640-edd5aea26427
+  SourcePackageId: "com.arisen.samples"
+  ChildKind: "terrain-weight-source"
+  ChildKey: "weights"
+  GeneratedByImporter: "ArisenTerrainWeightSourceImporter"

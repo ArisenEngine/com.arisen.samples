@@ -1,0 +1,9 @@
+Guid: fd63102e-f6ea-aae9-1369-4f192ad5496a
+AssetType: VegetationCluster
+Importer: ArisenVegetationScatterClusterImporter
+Generated:
+  SourceGuid: c0a92f10-0eb9-4d24-b729-7d0f38313001
+  SourcePackageId: com.arisen.samples
+  ChildKind: vegetation-cluster
+  ChildKey: recipe=1;world=b50c4c8007204b63b89baf2203063180;cell=acf23a95fd8e566f83e03c4f8b1f1dfb;terrain=275cb2a7ddce24ac6640edd5aea26427;terrainPackage=com.arisen.samples;species=3eb515ce3dea499481a1a14fc2fe0eb5;speciesPackage=com.arisen.samples;entry=valley-grass
+  GeneratedByImporter: ArisenVegetationScatterClusterImporter

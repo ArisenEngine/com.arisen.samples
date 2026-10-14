@@ -1,0 +1,9 @@
+Guid: 6c899b0b-22cc-e1c2-2ab2-2b8a173e5923
+AssetType: VegetationCluster
+Importer: ArisenVegetationScatterClusterImporter
+Generated:
+  SourceGuid: c0a92f10-0eb9-4d24-b729-7d0f38313001
+  SourcePackageId: com.arisen.samples
+  ChildKind: vegetation-cluster
+  ChildKey: recipe=1;world=b50c4c8007204b63b89baf2203063180;cell=abb049986edf52ecb8e15cfbff9ddff0;terrain=275cb2a7ddce24ac6640edd5aea26427;terrainPackage=com.arisen.samples;species=e560581300b6412985b205b754ccde74;speciesPackage=com.arisen.samples;entry=valley-shrub
+  GeneratedByImporter: ArisenVegetationScatterClusterImporter

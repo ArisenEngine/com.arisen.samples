@@ -1,0 +1,9 @@
+Guid: d67cb833-338c-4253-a1b1-f377328eb0ad
+AssetType: Texture2D
+Importer: GltfTextureImporter
+Generated:
+  SourceGuid: 8d5dc1c2-1a92-4502-9c49-b8fb2c42f9f7
+  SourcePackageId: com.arisen.samples
+  ChildKind: texture2d
+  ChildKey: images/0
+  GeneratedByImporter: GltfTextureImporter

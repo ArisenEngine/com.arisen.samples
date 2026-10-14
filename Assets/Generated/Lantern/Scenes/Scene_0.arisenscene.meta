@@ -1,0 +1,9 @@
+Guid: 1fe278d5-a53e-2e33-3344-c729e4f0ad06
+AssetType: Scene
+Importer: GltfSceneImporter
+Generated:
+  SourceGuid: 8d5dc1c2-1a92-4502-9c49-b8fb2c42f9f7
+  SourcePackageId: com.arisen.samples
+  ChildKind: scene
+  ChildKey: scenes/0
+  GeneratedByImporter: GltfSceneImporter

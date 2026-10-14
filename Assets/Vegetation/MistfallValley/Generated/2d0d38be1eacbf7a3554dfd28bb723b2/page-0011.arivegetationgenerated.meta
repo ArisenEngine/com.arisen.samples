@@ -1,0 +1,9 @@
+Guid: 621164d1-3477-ecaa-c4e0-09f6e849bffa
+AssetType: VegetationInstancePage
+Importer: ArisenVegetationScatterPageImporter
+Generated:
+  SourceGuid: 18027933-28e2-1b84-015a-410e6e20cb6f
+  SourcePackageId: com.arisen.samples
+  ChildKind: vegetation-instance-page
+  ChildKey: page=11;content=d222341fa112180e160ae2f9c0dc21ceffd787619c673af34b14f155fec5e54e
+  GeneratedByImporter: ArisenVegetationScatterPageImporter

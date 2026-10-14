@@ -1,0 +1,228 @@
+Version: 2
+WorldGuid: b50c4c80-0720-4b63-b89b-af2203063180
+Name: Mistfall Valley World
+PersistentScene:
+  Guid: 6c761a9d-2d06-562e-9779-7748e8afe4d3
+  PackageId: com.arisen.samples
+Partition:
+  Origin: { X: -512.0, Y: -64, Z: -512.0 }
+  CellSize: { X: 256.0, Y: 128, Z: 256.0 }
+  LoadRadius: 1
+  UnloadHysteresis: 1
+  MaxActiveCells: 12
+Policy:
+  UnresolvedReferences: KeepUnresolved
+  UnloadedTargets: ClearAndLateResolve
+  DependencyCycles: Reject
+Layers:
+- Id: surface
+  Priority: 0
+Cells:
+- Coordinate: { X: 0, Y: 0, Z: 0 }
+  Layer: surface
+  Scene:
+    Guid: ffa94686-406a-b2ef-9064-839ea20fda0a
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: -512.0, Y: -64, Z: -512.0 }
+    Max: { X: -256.0, Y: 64, Z: -256.0 }
+  FocusBounds:
+    Min: { X: -387.0, Y: 11.5888857068, Z: -387.0 }
+    Max: { X: -381.0, Y: 19.5888857068, Z: -381.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 1, Y: 0, Z: 0 }
+  Layer: surface
+  Scene:
+    Guid: 42e48405-cd1d-0bf5-1fce-bfda829fcbd7
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: -256.0, Y: -64, Z: -512.0 }
+    Max: { X: 0.0, Y: 64, Z: -256.0 }
+  FocusBounds:
+    Min: { X: -131.0, Y: 14.4265427044, Z: -387.0 }
+    Max: { X: -125.0, Y: 22.4265427044, Z: -381.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 2, Y: 0, Z: 0 }
+  Layer: surface
+  Scene:
+    Guid: 0705e2df-e85c-9fc5-01e3-d735fa872fd6
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: 0.0, Y: -64, Z: -512.0 }
+    Max: { X: 256.0, Y: 64, Z: -256.0 }
+  FocusBounds:
+    Min: { X: 125.0, Y: 17.6312384975, Z: -387.0 }
+    Max: { X: 131.0, Y: 25.6312384975, Z: -381.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 3, Y: 0, Z: 0 }
+  Layer: surface
+  Scene:
+    Guid: 7264741e-d8ca-26c0-ad45-0b9b3f352796
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: 256.0, Y: -64, Z: -512.0 }
+    Max: { X: 512.0, Y: 64, Z: -256.0 }
+  FocusBounds:
+    Min: { X: 381.0, Y: 35.7931446648, Z: -387.0 }
+    Max: { X: 387.0, Y: 43.7931446648, Z: -381.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 0, Y: 0, Z: 1 }
+  Layer: surface
+  Scene:
+    Guid: fa0c2315-253c-0d53-2597-bed1d59e1fcf
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: -512.0, Y: -64, Z: -256.0 }
+    Max: { X: -256.0, Y: 64, Z: 0.0 }
+  FocusBounds:
+    Min: { X: -387.0, Y: 12.4710749519, Z: -131.0 }
+    Max: { X: -381.0, Y: 20.4710749519, Z: -125.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 1, Y: 0, Z: 1 }
+  Layer: surface
+  Scene:
+    Guid: 870c0392-26e1-c80b-0085-66c6296b9b9a
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: -256.0, Y: -64, Z: -256.0 }
+    Max: { X: 0.0, Y: 64, Z: 0.0 }
+  FocusBounds:
+    Min: { X: -131.0, Y: 5.259287719, Z: -131.0 }
+    Max: { X: -125.0, Y: 13.259287719, Z: -125.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 2, Y: 0, Z: 1 }
+  Layer: surface
+  Scene:
+    Guid: ee0556b3-cc54-b929-0dde-954a8538576c
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: 0.0, Y: -64, Z: -256.0 }
+    Max: { X: 256.0, Y: 64, Z: 0.0 }
+  FocusBounds:
+    Min: { X: 125.0, Y: 17.5595020891, Z: -131.0 }
+    Max: { X: 131.0, Y: 25.5595020891, Z: -125.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 3, Y: 0, Z: 1 }
+  Layer: surface
+  Scene:
+    Guid: ab27f91d-7d79-bfa7-f6e7-2014eaf38ddf
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: 256.0, Y: -64, Z: -256.0 }
+    Max: { X: 512.0, Y: 64, Z: 0.0 }
+  FocusBounds:
+    Min: { X: 381.0, Y: 36.3237582998, Z: -131.0 }
+    Max: { X: 387.0, Y: 44.3237582998, Z: -125.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 0, Y: 0, Z: 2 }
+  Layer: surface
+  Scene:
+    Guid: a247ce71-2539-ba8f-f5e2-94d2dd125052
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: -512.0, Y: -64, Z: 0.0 }
+    Max: { X: -256.0, Y: 64, Z: 256.0 }
+  FocusBounds:
+    Min: { X: -387.0, Y: 21.8661695563, Z: 125.0 }
+    Max: { X: -381.0, Y: 29.8661695563, Z: 131.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 1, Y: 0, Z: 2 }
+  Layer: surface
+  Scene:
+    Guid: 0cd4c589-9650-858d-80b3-050c663a745d
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: -256.0, Y: -64, Z: 0.0 }
+    Max: { X: 0.0, Y: 64, Z: 256.0 }
+  FocusBounds:
+    Min: { X: -131.0, Y: 22.4787631997, Z: 125.0 }
+    Max: { X: -125.0, Y: 30.4787631997, Z: 131.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 2, Y: 0, Z: 2 }
+  Layer: surface
+  Scene:
+    Guid: 9640065c-7511-6347-fbba-9dd3f20f359a
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: 0.0, Y: -64, Z: 0.0 }
+    Max: { X: 256.0, Y: 64, Z: 256.0 }
+  FocusBounds:
+    Min: { X: 125.0, Y: 36.3290376565, Z: 125.0 }
+    Max: { X: 131.0, Y: 44.3290376565, Z: 131.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 3, Y: 0, Z: 2 }
+  Layer: surface
+  Scene:
+    Guid: 4c82dd95-d3c3-e417-d151-3c94e55ce228
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: 256.0, Y: -64, Z: 0.0 }
+    Max: { X: 512.0, Y: 64, Z: 256.0 }
+  FocusBounds:
+    Min: { X: 381.0, Y: 38.2984605895, Z: 125.0 }
+    Max: { X: 387.0, Y: 46.2984605895, Z: 131.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 0, Y: 0, Z: 3 }
+  Layer: surface
+  Scene:
+    Guid: 59329166-54ee-9632-0649-4229f912a1ad
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: -512.0, Y: -64, Z: 256.0 }
+    Max: { X: -256.0, Y: 64, Z: 512.0 }
+  FocusBounds:
+    Min: { X: -387.0, Y: 35.8346692556, Z: 381.0 }
+    Max: { X: -381.0, Y: 43.8346692556, Z: 387.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 1, Y: 0, Z: 3 }
+  Layer: surface
+  Scene:
+    Guid: c05fc2f4-a70f-7df2-9759-5afa2703a32a
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: -256.0, Y: -64, Z: 256.0 }
+    Max: { X: 0.0, Y: 64, Z: 512.0 }
+  FocusBounds:
+    Min: { X: -131.0, Y: 37.7675579566, Z: 381.0 }
+    Max: { X: -125.0, Y: 45.7675579566, Z: 387.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 2, Y: 0, Z: 3 }
+  Layer: surface
+  Scene:
+    Guid: 3d90cbc7-586c-8247-95b8-9565b7306694
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: 0.0, Y: -64, Z: 256.0 }
+    Max: { X: 256.0, Y: 64, Z: 512.0 }
+  FocusBounds:
+    Min: { X: 125.0, Y: 36.3892088016, Z: 381.0 }
+    Max: { X: 131.0, Y: 44.3892088016, Z: 387.0 }
+  EstimatedCpuBytes: 1048576
+  EstimatedGpuBytes: 67108864
+- Coordinate: { X: 3, Y: 0, Z: 3 }
+  Layer: surface
+  Scene:
+    Guid: 6f09862c-48de-d2ec-3803-a5a6f0abbdfc
+    PackageId: com.arisen.samples
+  Bounds:
+    Min: { X: 256.0, Y: -64, Z: 256.0 }
+    Max: { X: 512.0, Y: 64, Z: 512.0 }
+  FocusBounds:
+    Min: { X: 381.0, Y: 36.6117985393, Z: 381.0 }
+    Max: { X: 387.0, Y: 44.6117985393, Z: 387.0 }
+  EstimatedCpuBytes: 2097152
+  EstimatedGpuBytes: 134217728

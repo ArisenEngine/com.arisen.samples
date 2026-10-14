@@ -1,0 +1,149 @@
+Version: 2
+Name: Mistfall Valley World Cell 1,0
+ComponentSchemas:
+- TypeId: 1
+  Name: Transform
+  Version: 1
+  Required: true
+- TypeId: 1413829202
+  Name: TerrainTile
+  Version: 1
+  Required: true
+- TypeId: 1447380803
+  Name: VegetationCluster
+  Version: 1
+  Required: false
+Entities:
+- Guid: d3d972d4-dde9-5a00-847b-0e953e7b4b20
+  Name: Mistfall Valley Terrain Tile 2,0
+  Transform:
+    Position: { X: 0.0, Y: 64.0, Z: 0.0 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  TerrainTile:
+    TerrainRoot: { Guid: 275cb2a7-ddce-24ac-6640-edd5aea26427, PackageId: com.arisen.samples }
+    TileGuid: d1881d5a-a22b-6d73-2167-041a9f1d6445
+    LayerSet: { Guid: 5dcaa6bd-2b51-498d-9fa9-bd68f4642761, PackageId: com.arisen.samples }
+    Coordinate: { X: 2, Z: 0 }
+    WorldPlacement: { X: -256.0, Y: 0.0, Z: -512.0 }
+    Visible: true
+    CastShadows: true
+    ReceiveShadows: true
+    PreferHighQuality: false
+- Guid: 3dbac387-ba2f-5495-8bf1-54c0aba6bd4d
+  Name: Mistfall Valley Terrain Tile 3,0
+  Transform:
+    Position: { X: 128.0, Y: 64.0, Z: 0.0 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  TerrainTile:
+    TerrainRoot: { Guid: 275cb2a7-ddce-24ac-6640-edd5aea26427, PackageId: com.arisen.samples }
+    TileGuid: ac3765a2-5328-3b4b-16df-94e244224fcd
+    LayerSet: { Guid: 5dcaa6bd-2b51-498d-9fa9-bd68f4642761, PackageId: com.arisen.samples }
+    Coordinate: { X: 3, Z: 0 }
+    WorldPlacement: { X: -128.0, Y: 0.0, Z: -512.0 }
+    Visible: true
+    CastShadows: true
+    ReceiveShadows: true
+    PreferHighQuality: false
+- Guid: d6b73cd9-0b95-5f2d-bd6e-a1a657786690
+  Name: Mistfall Valley Terrain Tile 2,1
+  Transform:
+    Position: { X: 0.0, Y: 64.0, Z: 128.0 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  TerrainTile:
+    TerrainRoot: { Guid: 275cb2a7-ddce-24ac-6640-edd5aea26427, PackageId: com.arisen.samples }
+    TileGuid: 14d2f9c8-befc-cd52-b739-f10980444a92
+    LayerSet: { Guid: 5dcaa6bd-2b51-498d-9fa9-bd68f4642761, PackageId: com.arisen.samples }
+    Coordinate: { X: 2, Z: 1 }
+    WorldPlacement: { X: -256.0, Y: 0.0, Z: -384.0 }
+    Visible: true
+    CastShadows: true
+    ReceiveShadows: true
+    PreferHighQuality: false
+- Guid: fac7d5de-8f08-5c49-b233-cc26c97afc37
+  Name: Mistfall Valley Terrain Tile 3,1
+  Transform:
+    Position: { X: 128.0, Y: 64.0, Z: 128.0 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  TerrainTile:
+    TerrainRoot: { Guid: 275cb2a7-ddce-24ac-6640-edd5aea26427, PackageId: com.arisen.samples }
+    TileGuid: 206c266b-d477-6280-bdd9-6ff65b16c911
+    LayerSet: { Guid: 5dcaa6bd-2b51-498d-9fa9-bd68f4642761, PackageId: com.arisen.samples }
+    Coordinate: { X: 3, Z: 1 }
+    WorldPlacement: { X: -128.0, Y: 0.0, Z: -384.0 }
+    Visible: true
+    CastShadows: true
+    ReceiveShadows: true
+    PreferHighQuality: false
+- Guid: 894a4a85-be23-fb03-e8a1-ab0d27b01698
+  Name: Mistfall Valley World Vegetation Cluster valley-grass
+  Transform:
+    Position: { X: 0, Y: 0, Z: 0 }
+    Rotation: { X: 0, Y: 0, Z: 0, W: 1 }
+    Scale: { X: 1, Y: 1, Z: 1 }
+  VegetationCluster:
+    Cluster: { Guid: fd63102e-f6ea-aae9-1369-4f192ad5496a, PackageId: com.arisen.samples }
+    Biome: { Guid: c0a92f10-0eb9-4d24-b729-7d0f38313001, PackageId: com.arisen.samples }
+    Species: { Guid: 3eb515ce-3dea-4994-81a1-a14fc2fe0eb5, PackageId: com.arisen.samples }
+    WorldGuid: b50c4c80-0720-4b63-b89b-af2203063180
+    OwningCellGuid: acf23a95-fd8e-566f-83e0-3c4f8b1f1dfb
+    Cell: { X: 1, Y: 0, Z: 0, Layer: surface }
+    Origin: { X: -256, Y: -64, Z: -512 }
+    Bounds:
+      Min: { X: -256.79717394709587, Y: 7.976357102394104, Z: -512.7318458892405 }
+      Max: { X: 0.7462611794471741, Y: 18.093331158161163, Z: -255.2874641418457 }
+    Visible: true
+    CastShadows: true
+    ReceiveShadows: true
+    QualityGroup: 0
+    PageCount: 14
+    InstanceCount: 55334
+- Guid: 04e518c3-01a3-442c-86dd-0752747d703d
+  Name: Mistfall Valley World Vegetation Cluster valley-shrub
+  Transform:
+    Position: { X: 0, Y: 0, Z: 0 }
+    Rotation: { X: 0, Y: 0, Z: 0, W: 1 }
+    Scale: { X: 1, Y: 1, Z: 1 }
+  VegetationCluster:
+    Cluster: { Guid: b3f03f1c-2c9a-e76d-6d82-427224b555df, PackageId: com.arisen.samples }
+    Biome: { Guid: c0a92f10-0eb9-4d24-b729-7d0f38313001, PackageId: com.arisen.samples }
+    Species: { Guid: e5605813-00b6-4129-85b2-05b754ccde74, PackageId: com.arisen.samples }
+    WorldGuid: b50c4c80-0720-4b63-b89b-af2203063180
+    OwningCellGuid: acf23a95-fd8e-566f-83e0-3c4f8b1f1dfb
+    Cell: { X: 1, Y: 0, Z: 0, Layer: surface }
+    Origin: { X: -256, Y: -64, Z: -512 }
+    Bounds:
+      Min: { X: -259.0720337331295, Y: 5.502748012542725, Z: -515.0374510735273 }
+      Max: { X: 2.802396774291992, Y: 20.757551193237305, Z: -252.74139547348022 }
+    Visible: true
+    CastShadows: true
+    ReceiveShadows: true
+    QualityGroup: 0
+    PageCount: 5
+    InstanceCount: 4691
+- Guid: 95c8ac76-6974-8823-554d-44fa0cc58a7e
+  Name: Mistfall Valley World Vegetation Cluster valley-tree
+  Transform:
+    Position: { X: 0, Y: 0, Z: 0 }
+    Rotation: { X: 0, Y: 0, Z: 0, W: 1 }
+    Scale: { X: 1, Y: 1, Z: 1 }
+  VegetationCluster:
+    Cluster: { Guid: 085d7572-c9be-3dfe-fceb-12d9ae507351, PackageId: com.arisen.samples }
+    Biome: { Guid: c0a92f10-0eb9-4d24-b729-7d0f38313001, PackageId: com.arisen.samples }
+    Species: { Guid: 83212e38-5d3e-4494-8929-fe27639b5a29, PackageId: com.arisen.samples }
+    WorldGuid: b50c4c80-0720-4b63-b89b-af2203063180
+    OwningCellGuid: acf23a95-fd8e-566f-83e0-3c4f8b1f1dfb
+    Cell: { X: 1, Y: 0, Z: 0, Layer: surface }
+    Origin: { X: -256, Y: -64, Z: -512 }
+    Bounds:
+      Min: { X: -263.7889044880867, Y: 1.046158790588379, Z: -519.4853315353394 }
+      Max: { X: 6.413721561431885, Y: 25.540045738220215, Z: -248.85154581069946 }
+    Visible: true
+    CastShadows: true
+    ReceiveShadows: true
+    QualityGroup: 0
+    PageCount: 2
+    InstanceCount: 879

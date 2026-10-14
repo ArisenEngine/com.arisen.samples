@@ -1,0 +1,9 @@
+Guid: f1ba64aa-b6cf-b1c5-1984-d3582ddb047d
+AssetType: Material
+Importer: GltfMaterialImporter
+Generated:
+  SourceGuid: 8d5dc1c2-1a92-4502-9c49-b8fb2c42f9f7
+  SourcePackageId: com.arisen.samples
+  ChildKind: material
+  ChildKey: materials/0
+  GeneratedByImporter: GltfMaterialImporter
