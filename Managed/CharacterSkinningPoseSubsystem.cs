@@ -60,6 +60,7 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     private Quaternion[] m_PoseScratch = Array.Empty<Quaternion>();
     private Quaternion[] m_BlendFromPose = Array.Empty<Quaternion>();
     private float m_BlendRemaining;
+    private bool m_ParkedNoticeLogged;
 
     public int Priority => 40;
 
@@ -109,27 +110,26 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
 
         m_Elapsed += deltaTime;
         ComponentPool<SkeletonPoseComponent> poses = manager.GetPool<SkeletonPoseComponent>();
-        if (!poses.Has(m_Target))
+        // Clip playback is parked, deliberately and visibly: a clip's key tracks are local to the
+        // node they animate, while the palette composes a pose through the cooked *joint* chain, and
+        // folding the two frames is the slice that is still missing. Sampling anyway warps the
+        // figure, so the sample renders the cooked rest pose - the one the bind-pose invariant test
+        // proves is the source's own - until that slice lands.
+        _ = poses;
+        ParkedPlaybackNotice();
+    }
+
+    private void ParkedPlaybackNotice()
+    {
+        if (m_ParkedNoticeLogged)
         {
-            manager.AddComponent(m_Target, SkeletonPoseComponent.Create(m_Skin!.Joints.Count));
+            return;
         }
 
-        AdvanceClip(deltaTime);
-        MeshAnimationSampler.SamplePose(
-            m_Skin!,
-            m_Animations!,
-            m_ClipIndices[m_ClipCursor],
-            m_ClipTime,
-            m_PoseScratch);
-        ApplyBlend(deltaTime);
-
-        ref SkeletonPoseComponent pose = ref poses.GetRef(m_Target);
-        for (int jointIndex = 0; jointIndex < m_PoseScratch.Length; jointIndex++)
-        {
-            pose.SetLocalRotation(jointIndex, m_PoseScratch[jointIndex]);
-        }
-
-        LogPose();
+        m_ParkedNoticeLogged = true;
+        KernelLog.Warning(
+            $"[CharacterSkinning] Clip playback is parked: the character renders its cooked rest pose " +
+            $"while the clip's node-local tracks are folded into the cooked joint chain ({m_ClipIndices.Length} clip(s) cooked and addressable).");
     }
 
     public void Shutdown()
