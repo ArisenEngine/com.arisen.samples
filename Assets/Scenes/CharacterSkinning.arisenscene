@@ -71,9 +71,9 @@ Entities:
   Name: Character
   Transform:
     Position: { X: 0.0, Y: 0.0, Z: 0.0 }
-    # The imported character faces its own +X and the camera looks towards +Z, so the entity yaws a
-    # quarter turn to face the viewer.
-    Rotation: { X: 0.0, Y: 0.7071068, Z: 0.0, W: 0.7071068 }
+    # The imported figure is Z-up and faces its own +X: the entity stands it up (-90 about X), then
+    # yaws it to face the camera, which looks towards +Z.
+    Rotation: { X: -0.5, Y: 0.5, Z: 0.5, W: 0.5 }
     Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
   MeshRenderer:
     Mesh: { Guid: 1c7c1605-84e3-4032-b04f-38ee57feea73, PackageId: com.arisen.samples }
