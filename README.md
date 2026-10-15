@@ -42,10 +42,19 @@ A data-only sample adds nothing but its catalogue entry, its scene or world, and
 A sample whose content needs behaviour is driven by a subsystem in this package:
 
 - `CharacterSkinningPoseSubsystem` drives the `character-skinning` entry: it attaches the sampled
-  figure's `SkeletonPoseComponent` and writes its head's and shoulders' local rotations from elapsed
-  time, which is the pose the frame's skin palette is built from. It binds only the entity that
-  renders this package's rigged mesh, so every other sample - and every product - sees an inert
-  driver, and the authored mesh renders its bind pose if the driver never engages.
+  character's `SkeletonPoseComponent` and writes its head's and shoulders' local rotations from
+  elapsed time, which is the pose the frame's skin palette is built from. It binds only the entity
+  that renders this package's character mesh, so every other sample - and every product - sees an
+  inert driver, and the mesh renders its bind pose if the driver never engages.
+
+## Sample content
+
+`character-skinning` is the first sample whose content is imported rather than authored here: the
+Knight is KayKit's CC0 *Character Pack: Adventurers* figure (see `THIRD_PARTY.md`), and
+`Arisen/Scripts/Windows/prepare_kaykit_character.py` turns the pack's `.glb` into the single skinned
+mesh the engine's mesh cook imports - one skin, one skinned node, 41 joints - beside the character's
+extracted gradient atlas. The driver composes its arm swing with the rig's imported rest rotations,
+because a pose replaces a joint's local rotation rather than adding to it.
 
 ## The catalogue
 

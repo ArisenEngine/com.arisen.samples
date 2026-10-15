@@ -8,12 +8,13 @@ using ArisenKernel.Lifecycle;
 namespace ArisenEngine.Samples;
 
 /// <summary>
-/// Drives the skinning sample's figure. The catalogue entry's scene renders the package's rigged
-/// dummy, whose cooked skeleton is five joints - hips, chest, head, and one shoulder each - and this
-/// driver is what makes the sample a skinning sample: it attaches the entity's
-/// <see cref="SkeletonPoseComponent"/> and writes the head's and the shoulders' local rotations from
-/// elapsed time, so the arms hang at the figure's sides and sway instead of staying in the authored
-/// T-pose, and the frame's skin palette follows them.
+/// Drives the skinning sample's character. The catalogue entry's scene renders the package's
+/// imported Knight, whose cooked skeleton is 41 joints (the rig ships IK and control bones beside
+/// its deform bones), and this driver is what makes the sample a skinning sample: it attaches the
+/// entity's <see cref="SkeletonPoseComponent"/> and writes the head's and the shoulders' local
+/// rotations from elapsed time, so the arms hang at the character's sides and sway instead of
+/// staying in the imported T-pose, and the frame's skin palette follows them - which also carries
+/// the lower arms, the hands, and everything they hold.
 ///
 /// The driver is content-gated: it only binds the figure that renders the package's rigged mesh, so
 /// profiles that boot other content pay for one pool scan until that figure appears, and a scene that
@@ -23,18 +24,29 @@ namespace ArisenEngine.Samples;
 /// </summary>
 public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
 {
-    // Cooked skeleton order: 0 hips, 1 chest, 2 head, 3 right shoulder, 4 left shoulder.
-    private const int JointCount = 5;
-    private const int HeadJoint = 2;
-    private const int RightShoulderJoint = 3;
-    private const int LeftShoulderJoint = 4;
+    // Prepared by Arisen/Scripts/Windows/prepare_kaykit_character.py, which prints the same table:
+    // the mesh cook orders joints parents-first by bucketing each joint's ancestor depth and keeping
+    // the source order inside a depth, so these indices are the source order of the character's rig.
+    private const int JointCount = 41;
+    private const int LeftUpperArmJoint = 22;   // upperarm.l, +X in the imported T-pose
+    private const int RightUpperArmJoint = 23;  // upperarm.r, -X
+    private const int HeadJoint = 24;
+
+    // A pose replaces a joint's local rotation, and this rig does not rest at identity, so the swing
+    // composes with the imported rest rotations above them (values read from Assets/Meshes/Knight.glb;
+    // the prep script prints the same table). The rig mirrors the arms around the character's up axis,
+    // so one parent-space delta about Z lowers both: the left arm through -Z, the right through +Z.
+    private static readonly Quaternion LeftUpperArmRest =
+        Quaternion.Normalize(new Quaternion(-0.514121f, -0.485468f, -0.485468f, 0.514122f));
+    private static readonly Quaternion RightUpperArmRest =
+        Quaternion.Normalize(new Quaternion(-0.514121f, 0.485468f, 0.485468f, 0.514122f));
 
     private const float TwoPi = 2.0f * MathF.PI;
 
-    // The authored arms are horizontal, which is a bind pose, not a stance: the rest angle lowers
-    // them towards the figure's sides and the swing keeps them moving around it.
-    private const float ArmRestAngle = 1.10f;
-    private const float ArmSwingAmplitude = 0.32f;
+    // The imported arms are horizontal, which is a bind pose, not a stance: the rest angle lowers
+    // them towards the character's sides and the swing keeps them moving around it.
+    private const float ArmRestAngle = 1.12f;
+    private const float ArmSwingAmplitude = 0.26f;
     private const float ArmSwingFrequency = 0.35f;
     private const float HeadYawAmplitude = 0.38f;
     private const float HeadYawFrequency = 0.27f;
@@ -127,7 +139,7 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         ReadOnlySpan<MeshRendererComponent> renderers = meshes.GetRawComponentArray();
         for (int index = 0; index < meshes.Count; index++)
         {
-            if (renderers[index].MeshGuid != SamplesAssetRefs.RiggedDummyMeshGuid)
+            if (renderers[index].MeshGuid != SamplesAssetRefs.KnightMeshGuid)
             {
                 continue;
             }
@@ -153,14 +165,14 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     private void ApplyPose(ref SkeletonPoseComponent pose, float elapsed)
     {
         float armAngle = ArmRestAngle + ArmSwingAmplitude * MathF.Sin(TwoPi * ArmSwingFrequency * elapsed);
-        // A rotation about Z swings an arm in the figure's frontal plane; the sides mirror the sign so
-        // both arms lower instead of one crossing the body.
+        // The imported character faces +Z, so a rotation about Z swings an arm in its frontal plane;
+        // the sides mirror the sign so both arms lower instead of one crossing the body.
         pose.SetLocalRotation(
-            RightShoulderJoint,
-            Quaternion.CreateFromAxisAngle(Vector3.UnitZ, -armAngle));
+            LeftUpperArmJoint,
+            Quaternion.CreateFromAxisAngle(Vector3.UnitZ, -armAngle) * LeftUpperArmRest);
         pose.SetLocalRotation(
-            LeftShoulderJoint,
-            Quaternion.CreateFromAxisAngle(Vector3.UnitZ, armAngle));
+            RightUpperArmJoint,
+            Quaternion.CreateFromAxisAngle(Vector3.UnitZ, armAngle) * RightUpperArmRest);
 
         float headYaw = HeadYawAmplitude * MathF.Sin(TwoPi * HeadYawFrequency * elapsed);
         float headPitch = HeadPitchOffset + HeadPitchAmplitude * MathF.Sin(TwoPi * HeadPitchFrequency * elapsed);

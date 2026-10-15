@@ -1,7 +1,7 @@
-# The skinning sample: one rigged figure on the showcase floor. The mesh is drawn through its
-# material's SKINNED variant and its head and shoulders are posed by com.arisen.samples' own
-# driver, so a run whose driver never engages shows the authored T-pose - arms straight out - and
-# a run that skinning works in shows the figure standing with its arms at its sides.
+# The skinning sample: an imported game character on the showcase floor. The mesh is drawn through
+# its material's SKINNED variant and its head and shoulders are posed by com.arisen.samples' own
+# driver, so a run whose driver never engages shows the imported T-pose - arms straight out - and a
+# run that skinning works in shows the character standing with its arms at its sides.
 Version: 2
 Name: Character Skinning
 ComponentSchemas:
@@ -68,12 +68,14 @@ Entities:
     Material: { Guid: e87b0335-5689-45a0-9fe1-455a01b59a20, PackageId: com.arisen.samples }
     Visible: true
 - Guid: 43000000-0000-0000-0000-000000000005
-  Name: Rigged Dummy
+  Name: Knight
   Transform:
     Position: { X: 0.0, Y: 0.0, Z: 0.0 }
-    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    # The imported character faces +Z and the camera looks towards +Z, so the entity turns to face
+    # the viewer.
+    Rotation: { X: 0.0, Y: 1.0, Z: 0.0, W: 0.0 }
     Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
   MeshRenderer:
-    Mesh: { Guid: cb9d67e7-8334-4878-886d-6c0c14ed2c11, PackageId: com.arisen.samples }
-    Material: { Guid: a2122786-c40a-41f2-bf35-1f5cbc4d39c2, PackageId: com.arisen.samples }
+    Mesh: { Guid: 6ab1d419-fe75-47b4-b2a3-2dd2a3cb6c70, PackageId: com.arisen.samples }
+    Material: { Guid: 9082412f-5a5a-43f3-b8cb-3fdbbe892747, PackageId: com.arisen.samples }
     Visible: true

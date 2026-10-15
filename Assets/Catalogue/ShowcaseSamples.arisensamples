@@ -43,10 +43,10 @@ Samples:
   Gate: scene-smoke
   Artifact: visual-summary-PhysicsShowcase-latest.json
 - Id: character-skinning
-  Description: One rigged figure posed at runtime - the C1 skeleton, cooked skin, and GPU skinning path as a sample.
+  Description: An imported game character posed at runtime - the C1 skeleton, cooked skin, and GPU skinning path as a sample.
   Scene:
     Guid: 1dcc0f14-5100-48eb-a279-271d165fae25
     PackageId: com.arisen.samples
-  ExpectedVisual: The rigged figure stands on the floor with its arms at its sides - not the authored T-pose - while the arms sway and the head turns, drawn through the material's SKINNED pipeline variant.
+  ExpectedVisual: The knight stands on the floor with its arms at its sides - not the imported T-pose - while the arms sway and the head turns, drawn through the material's SKINNED pipeline variant and casting a shadow that follows the pose.
   Gate: scene-smoke
   Artifact: visual-summary-Samples-character-skinning-latest.json
