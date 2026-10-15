@@ -68,14 +68,14 @@ Entities:
     Material: { Guid: e87b0335-5689-45a0-9fe1-455a01b59a20, PackageId: com.arisen.samples }
     Visible: true
 - Guid: 43000000-0000-0000-0000-000000000005
-  Name: Knight
+  Name: Character
   Transform:
     Position: { X: 0.0, Y: 0.0, Z: 0.0 }
-    # The imported character faces +Z and the camera looks towards +Z, so the entity turns to face
-    # the viewer.
-    Rotation: { X: 0.0, Y: 1.0, Z: 0.0, W: 0.0 }
+    # The imported character faces its own +X and the camera looks towards +Z, so the entity yaws a
+    # quarter turn to face the viewer.
+    Rotation: { X: 0.0, Y: 0.7071068, Z: 0.0, W: 0.7071068 }
     Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
   MeshRenderer:
-    Mesh: { Guid: 6ab1d419-fe75-47b4-b2a3-2dd2a3cb6c70, PackageId: com.arisen.samples }
-    Material: { Guid: 9082412f-5a5a-43f3-b8cb-3fdbbe892747, PackageId: com.arisen.samples }
+    Mesh: { Guid: 1c7c1605-84e3-4032-b04f-38ee57feea73, PackageId: com.arisen.samples }
+    Material: { Guid: d5219005-c65b-424b-8877-c96465149a92, PackageId: com.arisen.samples }
     Visible: true

@@ -1,4 +1,4 @@
-Name: PackageGame/Knight
+Name: PackageGame/CesiumMan
 Shader:
   Guid: 72b6d255-0f54-46e5-9d05-8e0486d4f875
   Name: GenericRP/StandardLit
@@ -12,8 +12,8 @@ Texture2DRefs:
 - Name: BaseColor
   Slot: 0
   Texture:
-    Guid: ee4bed1b-8de8-4006-a8fb-21ba1acf9a34
-    Name: Knight_BaseColor
+    Guid: 12847141-1faf-4ad3-9e1d-f09da87c1d03
+    Name: CesiumMan_BaseColor
     Variant:
       Format: R8G8B8A8UNorm
       ColorSpace: SRgb

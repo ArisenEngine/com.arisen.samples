@@ -12,8 +12,8 @@ namespace ArisenEngine.Samples;
 
 /// <summary>
 /// Plays the skinning sample's character. The catalogue entry's scene renders the package's imported
-/// Knight, whose cooked mesh carries a 41-joint skeleton and the pack's clips; this driver reads that
-/// payload once, then samples the current clip every frame and writes the resulting local rotations
+/// figure, whose cooked mesh carries its own skeleton and clips; this driver reads that payload
+/// once, then samples the current clip every frame and writes the resulting local rotations
 /// into the entity's <see cref="SkeletonPoseComponent"/>, which is the pose the frame's skin palette
 /// is built from. A clip is addressed by its name, so the sample's sequence is content, not indices.
 ///
@@ -24,27 +24,22 @@ namespace ArisenEngine.Samples;
 public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
 {
     /// <summary>
-    /// The pack's clips the sample plays, in order. KayKit ships them in the same file the character's
-    /// mesh cooks from, so the sample demonstrates clips authored for a real rig rather than poses
-    /// written here.
+    /// The clips the sample plays, in order. They ship in the same file the character's mesh cooks
+    /// from, so the sample plays clips authored for a real rig rather than poses written here.
+    
     /// </summary>
     private static readonly string[] ClipSequence =
     [
-        // The pack's plain "Idle" is the armed stance - hands forward around a weapon - and this
-        // character carries none of the pack's accessories, so its idle is the unarmed one. The
-        // locomotion and celebration clips are stance-independent.
-        "Unarmed_Idle",
-        "Walking_A",
-        "Running_A",
-        "Jump_Full_Short",
-        "Cheer",
+        // Cesium Man ships one walk cycle and no stance variants, so the sample loops the clip the
+        // character came with.
+        "Clip_0",
     ];
 
     private const float PoseLogIntervalSeconds = 1.0f;
 
     /// <summary>
-    /// The fade every clip change runs through. Clips are authored independently - the pack's jump
-    /// lands in a crouch while its cheer starts upright - so a cut would snap the skeleton; the fade
+    /// The fade every clip change runs through. Clips are authored independently - one ends in a
+    /// crouch while the next starts upright - so a cut would snap the skeleton; the fade
     /// blends the pose the frame is leaving with the pose the incoming clip samples.
     /// </summary>
     private const float BlendSeconds = 0.15f;
@@ -171,7 +166,7 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         ReadOnlySpan<MeshRendererComponent> renderers = meshes.GetRawComponentArray();
         for (int index = 0; index < meshes.Count; index++)
         {
-            if (renderers[index].MeshGuid != SamplesAssetRefs.KnightMeshGuid)
+            if (renderers[index].MeshGuid != SamplesAssetRefs.CesiumManMeshGuid)
             {
                 continue;
             }
@@ -239,18 +234,18 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     private MeshAsset CreateMeshAsset()
     {
         if (m_AssetDatabase!.CanReadSourceAssets &&
-            m_AssetDatabase.TryGetAsset(SamplesAssetRefs.KnightMeshGuid, out AssetRecord? sourceAsset))
+            m_AssetDatabase.TryGetAsset(SamplesAssetRefs.CesiumManMeshGuid, out AssetRecord? sourceAsset))
         {
             return new MeshAsset(
-                SamplesAssetRefs.KnightMeshGuid,
-                "PackageGame/Knight",
+                SamplesAssetRefs.CesiumManMeshGuid,
+                "PackageGame/CesiumMan",
                 MeshVariantKey.Default,
                 ResolveMeshSourceFormat(sourceAsset.SourcePath));
         }
 
         return new MeshAsset(
-            SamplesAssetRefs.KnightMeshGuid,
-            $"RuntimeMesh/{SamplesAssetRefs.KnightMeshGuid:N}",
+            SamplesAssetRefs.CesiumManMeshGuid,
+            $"RuntimeMesh/{SamplesAssetRefs.CesiumManMeshGuid:N}",
             MeshVariantKey.Default);
     }
 
