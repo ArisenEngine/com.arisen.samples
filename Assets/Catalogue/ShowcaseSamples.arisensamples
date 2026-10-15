@@ -42,3 +42,11 @@ Samples:
   ExpectedVisual: Authored bodies fall, collide with the floor and the pedestal, and come to rest while the camera follows a character that walks with WASD, jumps with Space, and orbits under the right mouse button.
   Gate: scene-smoke
   Artifact: visual-summary-PhysicsShowcase-latest.json
+- Id: character-skinning
+  Description: One rigged figure posed at runtime - the C1 skeleton, cooked skin, and GPU skinning path as a sample.
+  Scene:
+    Guid: 1dcc0f14-5100-48eb-a279-271d165fae25
+    PackageId: com.arisen.samples
+  ExpectedVisual: The rigged figure stands on the floor with its arms at its sides - not the authored T-pose - while the arms sway and the head turns, drawn through the material's SKINNED pipeline variant.
+  Gate: scene-smoke
+  Artifact: visual-summary-Samples-character-skinning-latest.json
