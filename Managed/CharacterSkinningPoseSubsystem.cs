@@ -30,7 +30,10 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     /// </summary>
     private static readonly string[] ClipSequence =
     [
-        "Idle",
+        // The pack's plain "Idle" is the armed stance - hands forward around a weapon - and this
+        // character carries none of the pack's accessories, so its idle is the unarmed one. The
+        // locomotion and celebration clips are stance-independent.
+        "Unarmed_Idle",
         "Walking_A",
         "Running_A",
         "Jump_Full_Short",
@@ -38,6 +41,13 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     ];
 
     private const float PoseLogIntervalSeconds = 1.0f;
+
+    /// <summary>
+    /// The fade every clip change runs through. Clips are authored independently - the pack's jump
+    /// lands in a crouch while its cheer starts upright - so a cut would snap the skeleton; the fade
+    /// blends the pose the frame is leaving with the pose the incoming clip samples.
+    /// </summary>
+    private const float BlendSeconds = 0.15f;
 
     private IAssetDatabase? m_AssetDatabase;
     private SceneSubsystem? m_Scenes;
@@ -53,6 +63,8 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     private int m_ClipCursor;
     private float m_ClipTime;
     private Quaternion[] m_PoseScratch = Array.Empty<Quaternion>();
+    private Quaternion[] m_BlendFromPose = Array.Empty<Quaternion>();
+    private float m_BlendRemaining;
 
     public int Priority => 40;
 
@@ -114,6 +126,7 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
             m_ClipIndices[m_ClipCursor],
             m_ClipTime,
             m_PoseScratch);
+        ApplyBlend(deltaTime);
 
         ref SkeletonPoseComponent pose = ref poses.GetRef(m_Target);
         for (int jointIndex = 0; jointIndex < m_PoseScratch.Length; jointIndex++)
@@ -213,6 +226,7 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
 
         m_ClipIndices = sequence.ToArray();
         m_PoseScratch = new Quaternion[m_Skin.Joints.Count];
+        m_BlendFromPose = new Quaternion[m_Skin.Joints.Count];
         m_ClipCursor = 0;
         m_ClipTime = 0.0f;
     }
@@ -260,12 +274,33 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
 
         m_ClipTime -= clip.Duration;
         m_ClipCursor = (m_ClipCursor + 1) % m_ClipIndices.Length;
+        // The fade starts from the pose this frame has already drawn, so the switch never snaps.
+        Array.Copy(m_PoseScratch, m_BlendFromPose, m_PoseScratch.Length);
+        m_BlendRemaining = BlendSeconds;
         MeshAnimationClip next = m_Animations.GetClip(m_ClipIndices[m_ClipCursor]);
         KernelLog.InfoFormat(
             "[CharacterSkinning] Clip '{0}' ({1:0.###}s, {2} track(s)).",
             next.Name,
             next.Duration,
             next.TrackCount);
+    }
+
+    private void ApplyBlend(float deltaTime)
+    {
+        if (m_BlendRemaining <= 0.0f)
+        {
+            return;
+        }
+
+        m_BlendRemaining = MathF.Max(0.0f, m_BlendRemaining - deltaTime);
+        float blend = 1.0f - m_BlendRemaining / BlendSeconds;
+        for (int jointIndex = 0; jointIndex < m_PoseScratch.Length; jointIndex++)
+        {
+            m_PoseScratch[jointIndex] = Quaternion.Slerp(
+                m_BlendFromPose[jointIndex],
+                m_PoseScratch[jointIndex],
+                blend);
+        }
     }
 
     /// <summary>
