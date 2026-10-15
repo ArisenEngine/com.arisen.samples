@@ -8,8 +8,21 @@
   },
   "layer": "user",
   "author": "Arisen Team",
-  "description": "Capability gallery for Arisen Engine: the data-driven sample catalogue, the hub entry scene, and the per-sample launch targets that every engine capability is reviewed and gated through.",
+  "description": "Capability gallery for Arisen Engine: the data-driven sample catalogue, the hub entry scene, the per-sample launch targets that every engine capability is reviewed and gated through, and the drivers the samples that need one own themselves.",
+  "type": "managed",
+  "entry": {
+    "assembly": "Com.Arisen.Samples.dll",
+    "class": "ArisenEngine.Samples.SamplesPackage"
+  },
   "dependencies": {
-    "com.arisen.core": "1.0.0"
-  }
+    "com.arisen.core": "1.0.0",
+    "com.arisen.ecs": "1.0.0"
+  },
+  "subsystems": [
+    {
+      "class": "ArisenEngine.Samples.CharacterSkinningPoseSubsystem",
+      "phase": "Running",
+      "priority": 40
+    }
+  ]
 }

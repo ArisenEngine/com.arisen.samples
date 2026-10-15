@@ -1,0 +1,6 @@
+{
+  "entry": {
+    "assembly": "Com.Arisen.Samples.dll",
+    "class": "ArisenEngine.Samples.SamplesPackage"
+  }
+}
