@@ -47,6 +47,6 @@ Samples:
   Scene:
     Guid: 1dcc0f14-5100-48eb-a279-271d165fae25
     PackageId: com.arisen.samples
-  ExpectedVisual: The knight stands on the floor with its arms at its sides - not the imported T-pose - while the arms sway and the head turns, drawn through the material's SKINNED pipeline variant and casting a shadow that follows the pose.
+  ExpectedVisual: The knight plays the imported pack's clips in sequence - Idle, Walking_A, Running_A, Jump_Full_Short, Cheer - on the floor, drawn through the material's SKINNED pipeline variant and casting a shadow that follows the pose.
   Gate: scene-smoke
   Artifact: visual-summary-Samples-character-skinning-latest.json

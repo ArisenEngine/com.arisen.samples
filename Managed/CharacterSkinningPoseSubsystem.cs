@@ -1,66 +1,58 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
+using ArisenEngine.Core.Assets;
 using ArisenEngine.Core.ECS;
 using ArisenEngine.ECS.Lifecycle;
+using ArisenEngine.Rendering.Resources;
 using ArisenKernel.Diagnostics;
 using ArisenKernel.Lifecycle;
 
 namespace ArisenEngine.Samples;
 
 /// <summary>
-/// Drives the skinning sample's character. The catalogue entry's scene renders the package's
-/// imported Knight, whose cooked skeleton is 41 joints (the rig ships IK and control bones beside
-/// its deform bones), and this driver is what makes the sample a skinning sample: it attaches the
-/// entity's <see cref="SkeletonPoseComponent"/> and writes the head's and the shoulders' local
-/// rotations from elapsed time, so the arms hang at the character's sides and sway instead of
-/// staying in the imported T-pose, and the frame's skin palette follows them - which also carries
-/// the lower arms, the hands, and everything they hold.
+/// Plays the skinning sample's character. The catalogue entry's scene renders the package's imported
+/// Knight, whose cooked mesh carries a 41-joint skeleton and the pack's clips; this driver reads that
+/// payload once, then samples the current clip every frame and writes the resulting local rotations
+/// into the entity's <see cref="SkeletonPoseComponent"/>, which is the pose the frame's skin palette
+/// is built from. A clip is addressed by its name, so the sample's sequence is content, not indices.
 ///
-/// The driver is content-gated: it only binds the figure that renders the package's rigged mesh, so
-/// profiles that boot other content pay for one pool scan until that figure appears, and a scene that
-/// never contains it is never posed. The joint count is the driver's contract with the cooked
-/// skeleton: a mismatch is a broken sample and fails loudly in the render pipeline instead of
-/// silently drawing the wrong palette.
+/// The driver is content-gated: it only binds the entity that renders the character mesh, so profiles
+/// that boot other content pay for one pool scan until that mesh appears, and the character renders
+/// its cooked rest pose if the driver never engages.
 /// </summary>
 public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
 {
-    // Prepared by Arisen/Scripts/Windows/prepare_kaykit_character.py, which prints the same table:
-    // the mesh cook orders joints parents-first by bucketing each joint's ancestor depth and keeping
-    // the source order inside a depth, so these indices are the source order of the character's rig.
-    private const int JointCount = 41;
-    private const int LeftUpperArmJoint = 22;   // upperarm.l, +X in the imported T-pose
-    private const int RightUpperArmJoint = 23;  // upperarm.r, -X
-    private const int HeadJoint = 24;
+    /// <summary>
+    /// The pack's clips the sample plays, in order. KayKit ships them in the same file the character's
+    /// mesh cooks from, so the sample demonstrates clips authored for a real rig rather than poses
+    /// written here.
+    /// </summary>
+    private static readonly string[] ClipSequence =
+    [
+        "Idle",
+        "Walking_A",
+        "Running_A",
+        "Jump_Full_Short",
+        "Cheer",
+    ];
 
-    // A pose replaces a joint's local rotation, and this rig does not rest at identity, so the swing
-    // composes with the imported rest rotations above them (values read from Assets/Meshes/Knight.glb;
-    // the prep script prints the same table). The rig mirrors the arms around the character's up axis,
-    // so one parent-space delta about Z lowers both: the left arm through -Z, the right through +Z.
-    private static readonly Quaternion LeftUpperArmRest =
-        Quaternion.Normalize(new Quaternion(-0.514121f, -0.485468f, -0.485468f, 0.514122f));
-    private static readonly Quaternion RightUpperArmRest =
-        Quaternion.Normalize(new Quaternion(-0.514121f, 0.485468f, 0.485468f, 0.514122f));
+    private const float PoseLogIntervalSeconds = 1.0f;
 
-    private const float TwoPi = 2.0f * MathF.PI;
-
-    // The imported arms are horizontal, which is a bind pose, not a stance: the rest angle lowers
-    // them towards the character's sides and the swing keeps them moving around it.
-    private const float ArmRestAngle = 1.12f;
-    private const float ArmSwingAmplitude = 0.26f;
-    private const float ArmSwingFrequency = 0.35f;
-    private const float HeadYawAmplitude = 0.38f;
-    private const float HeadYawFrequency = 0.27f;
-    private const float HeadPitchOffset = 0.06f;
-    private const float HeadPitchAmplitude = 0.12f;
-    private const float HeadPitchFrequency = 0.47f;
-
-    private const int PoseLogIntervalFrames = 60;
-
+    private IAssetDatabase? m_AssetDatabase;
     private SceneSubsystem? m_Scenes;
     private Entity m_Target = Entity.Null;
     private bool m_HasTarget;
     private float m_Elapsed;
-    private int m_FramesSincePoseLog;
+    private float m_NextPoseLogTime;
+
+    private CookedAssetHandle m_CookedHandle = CookedAssetHandle.Invalid;
+    private MeshSkin? m_Skin;
+    private MeshAnimationTable? m_Animations;
+    private int[] m_ClipIndices = Array.Empty<int>();
+    private int m_ClipCursor;
+    private float m_ClipTime;
+    private Quaternion[] m_PoseScratch = Array.Empty<Quaternion>();
 
     public int Priority => 40;
 
@@ -70,7 +62,7 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     {
 #if ARISEN_ENGINE_EDITOR
         // The editor's scene documents own authoring previews, so a runtime driver that poses a
-        // scene's content stays out of the way: no scene subsystem is resolved and Tick never runs.
+        // scene's content stays out of the way: no services are resolved and Tick never runs.
         KernelLog.Info(
             "[CharacterSkinning] Editor build detected; the editor's scene documents own authoring " +
             "previews, so the sample driver stays idle.");
@@ -79,6 +71,9 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         m_Scenes = kernel.GetSubsystem<SceneSubsystem>()
             ?? throw new InvalidOperationException(
                 "The skinning sample driver requires SceneSubsystem.");
+        m_AssetDatabase = kernel.Services.GetService<IAssetDatabase>()
+            ?? throw new InvalidOperationException(
+                "The skinning sample driver samples the character's cooked clips, so it requires the asset database.");
 #endif
     }
 
@@ -109,27 +104,51 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         ComponentPool<SkeletonPoseComponent> poses = manager.GetPool<SkeletonPoseComponent>();
         if (!poses.Has(m_Target))
         {
-            manager.AddComponent(m_Target, SkeletonPoseComponent.Create(JointCount));
+            manager.AddComponent(m_Target, SkeletonPoseComponent.Create(m_Skin!.Joints.Count));
         }
 
+        AdvanceClip(deltaTime);
+        MeshAnimationSampler.SamplePose(
+            m_Skin!,
+            m_Animations!,
+            m_ClipIndices[m_ClipCursor],
+            m_ClipTime,
+            m_PoseScratch);
+
         ref SkeletonPoseComponent pose = ref poses.GetRef(m_Target);
-        ApplyPose(ref pose, m_Elapsed);
+        for (int jointIndex = 0; jointIndex < m_PoseScratch.Length; jointIndex++)
+        {
+            pose.SetLocalRotation(jointIndex, m_PoseScratch[jointIndex]);
+        }
+
         LogPose();
     }
 
     public void Shutdown()
     {
         ClearTarget();
+        if (m_CookedHandle.IsValid && m_AssetDatabase != null)
+        {
+            m_AssetDatabase.Release(m_CookedHandle);
+        }
+
+        m_CookedHandle = CookedAssetHandle.Invalid;
+        m_Skin = null;
+        m_Animations = null;
+        m_ClipIndices = Array.Empty<int>();
+        m_PoseScratch = Array.Empty<Quaternion>();
+        m_ClipCursor = 0;
+        m_ClipTime = 0.0f;
         m_Elapsed = 0.0f;
-        m_FramesSincePoseLog = 0;
+        m_NextPoseLogTime = 0.0f;
     }
 
     public void Dispose() => Shutdown();
 
     /// <summary>
-    /// Finds the entity that renders the sample's rigged mesh and gives it the pose the render
-    /// pipeline reads. Returns false while no such entity exists - the sample's scene is simply not
-    /// the loaded content - and every later frame retries, so a scene switch binds the figure it
+    /// Finds the entity that renders the sample's character mesh and reads the cooked payload its
+    /// clips come from. Returns false while no such entity exists - the sample's scene is simply not
+    /// the loaded content - and every later frame retries, so a scene switch binds the character it
     /// brings.
     /// </summary>
     private bool TryBindTarget(EntityManager manager)
@@ -146,58 +165,139 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
 
             m_Target = entities[index];
             m_HasTarget = true;
-            if (!manager.HasComponent<SkeletonPoseComponent>(m_Target))
-            {
-                manager.AddComponent(m_Target, SkeletonPoseComponent.Create(JointCount));
-            }
-
+            LoadCharacterClips();
             KernelLog.InfoFormat(
-                "[CharacterSkinning] Bound the sample figure {0} ({1} joints); posing its head and " +
-                "shoulders from elapsed time.",
+                "[CharacterSkinning] Bound the sample character {0} ({1} joints) and its cooked clips: {2}.",
                 m_Target,
-                JointCount);
+                m_Skin!.Joints.Count,
+                DescribeSequence());
             return true;
         }
 
         return false;
     }
 
-    private void ApplyPose(ref SkeletonPoseComponent pose, float elapsed)
+    private void LoadCharacterClips()
     {
-        float armAngle = ArmRestAngle + ArmSwingAmplitude * MathF.Sin(TwoPi * ArmSwingFrequency * elapsed);
-        // The imported character faces +Z, so a rotation about Z swings an arm in its frontal plane;
-        // the sides mirror the sign so both arms lower instead of one crossing the body.
-        pose.SetLocalRotation(
-            LeftUpperArmJoint,
-            Quaternion.CreateFromAxisAngle(Vector3.UnitZ, -armAngle) * LeftUpperArmRest);
-        pose.SetLocalRotation(
-            RightUpperArmJoint,
-            Quaternion.CreateFromAxisAngle(Vector3.UnitZ, armAngle) * RightUpperArmRest);
+        CookedMesh cooked = MeshAssetCooker.LoadOrCook(m_AssetDatabase!, CreateMeshAsset());
+        m_CookedHandle = cooked.Handle;
+        ReadOnlyMemory<byte> payload = m_AssetDatabase!.GetCookedAssetBytes(m_CookedHandle);
+        m_Skin = MeshSkinPalette.ReadCookedSkin(payload.Span, cooked);
+        m_Animations = MeshAnimationTable.Read(payload.Span, cooked);
+        if (m_Animations.ClipCount == 0)
+        {
+            throw new InvalidOperationException(
+                "[CharacterSkinning] The character's cooked mesh carries no clips; this sample animates " +
+                "clips and the cook bakes them beside the skeleton.");
+        }
 
-        float headYaw = HeadYawAmplitude * MathF.Sin(TwoPi * HeadYawFrequency * elapsed);
-        float headPitch = HeadPitchOffset + HeadPitchAmplitude * MathF.Sin(TwoPi * HeadPitchFrequency * elapsed);
-        pose.SetLocalRotation(HeadJoint, Quaternion.CreateFromYawPitchRoll(headYaw, headPitch, 0.0f));
+        var sequence = new List<int>(ClipSequence.Length);
+        foreach (string clip in ClipSequence)
+        {
+            if (m_Animations.TryFindClip(clip, out int clipIndex))
+            {
+                sequence.Add(clipIndex);
+            }
+            else
+            {
+                KernelLog.Warning(
+                    $"[CharacterSkinning] The character's payload has no clip named '{clip}'; the sample skips it.");
+            }
+        }
+
+        if (sequence.Count == 0)
+        {
+            throw new InvalidOperationException(
+                "[CharacterSkinning] None of the sample's clips are cooked into the character's payload.");
+        }
+
+        m_ClipIndices = sequence.ToArray();
+        m_PoseScratch = new Quaternion[m_Skin.Joints.Count];
+        m_ClipCursor = 0;
+        m_ClipTime = 0.0f;
     }
 
     /// <summary>
-    /// A bounded per-second line is what makes a run's pose observable: the joints themselves are
-    /// consumed by the palette, and the summary artifact only records the frame it captures.
+    /// The cooked artifact is addressed by asset identity alone. The source format only matters when
+    /// the payload has to be cooked from source, so a cooked-only run - where the source is not
+    /// readable - reads the artifact without one.
     /// </summary>
-    private void LogPose()
+    private MeshAsset CreateMeshAsset()
     {
-        if (++m_FramesSincePoseLog < PoseLogIntervalFrames)
+        if (m_AssetDatabase!.CanReadSourceAssets &&
+            m_AssetDatabase.TryGetAsset(SamplesAssetRefs.KnightMeshGuid, out AssetRecord? sourceAsset))
+        {
+            return new MeshAsset(
+                SamplesAssetRefs.KnightMeshGuid,
+                "PackageGame/Knight",
+                MeshVariantKey.Default,
+                ResolveMeshSourceFormat(sourceAsset.SourcePath));
+        }
+
+        return new MeshAsset(
+            SamplesAssetRefs.KnightMeshGuid,
+            $"RuntimeMesh/{SamplesAssetRefs.KnightMeshGuid:N}",
+            MeshVariantKey.Default);
+    }
+
+    private static MeshSourceFormat ResolveMeshSourceFormat(string sourcePath) =>
+        Path.GetExtension(sourcePath).ToLowerInvariant() switch
+        {
+            ".glb" => MeshSourceFormat.GltfBinary,
+            ".gltf" => MeshSourceFormat.GltfJson,
+            ".obj" => MeshSourceFormat.WavefrontObj,
+            _ => MeshSourceFormat.ArisenTextMesh,
+        };
+
+    private void AdvanceClip(float deltaTime)
+    {
+        m_ClipTime += deltaTime;
+        MeshAnimationClip clip = m_Animations!.GetClip(m_ClipIndices[m_ClipCursor]);
+        if (m_ClipIndices.Length == 1 || clip.Duration <= 0.0f || m_ClipTime < clip.Duration)
         {
             return;
         }
 
-        m_FramesSincePoseLog = 0;
-        float armAngle = ArmRestAngle + ArmSwingAmplitude * MathF.Sin(TwoPi * ArmSwingFrequency * m_Elapsed);
+        m_ClipTime -= clip.Duration;
+        m_ClipCursor = (m_ClipCursor + 1) % m_ClipIndices.Length;
+        MeshAnimationClip next = m_Animations.GetClip(m_ClipIndices[m_ClipCursor]);
         KernelLog.InfoFormat(
-            "[CharacterSkinning] Pose | Elapsed: {0:F2}s | Arm: {1:F3} rad | Head yaw: {2:F3} rad | Head pitch: {3:F3} rad",
+            "[CharacterSkinning] Clip '{0}' ({1:0.###}s, {2} track(s)).",
+            next.Name,
+            next.Duration,
+            next.TrackCount);
+    }
+
+    /// <summary>
+    /// A bounded per-second line is what makes a run's clip observable: the sampled pose itself is
+    /// consumed by the palette, and the frame's artifact only records what it captured.
+    /// </summary>
+    private void LogPose()
+    {
+        if (m_Elapsed < m_NextPoseLogTime)
+        {
+            return;
+        }
+
+        m_NextPoseLogTime = m_Elapsed + PoseLogIntervalSeconds;
+        MeshAnimationClip clip = m_Animations!.GetClip(m_ClipIndices[m_ClipCursor]);
+        KernelLog.InfoFormat(
+            "[CharacterSkinning] Clip '{0}' | Elapsed: {1:F2}s | Clip time: {2:F2}s / {3:F2}s",
+            clip.Name,
             m_Elapsed,
-            armAngle,
-            HeadYawAmplitude * MathF.Sin(TwoPi * HeadYawFrequency * m_Elapsed),
-            HeadPitchOffset + HeadPitchAmplitude * MathF.Sin(TwoPi * HeadPitchFrequency * m_Elapsed));
+            m_ClipTime,
+            clip.Duration);
+    }
+
+    private string DescribeSequence()
+    {
+        var names = new string[m_ClipIndices.Length];
+        for (int index = 0; index < m_ClipIndices.Length; index++)
+        {
+            names[index] = m_Animations!.GetClip(m_ClipIndices[index]).Name;
+        }
+
+        return string.Join(", ", names);
     }
 
     private void ClearTarget()
