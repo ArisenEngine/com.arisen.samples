@@ -33,12 +33,12 @@ Samples:
   Gate: sample-switch
   Artifact: sample-switch-summary-Samples-latest.json
 - Id: physics-showcase
-  Description: Rigid bodies falling onto static geometry - the D2 slice authored as scene components.
+  Description: Rigid bodies falling onto static geometry and a walkable character - the D2/D3 slices authored as scene components.
   Scene:
     Guid: b7e2c4a9-8f31-4d6e-a0c5-93d47f1b6e28
     PackageId: com.arisen.samples
   Packages:
   - com.arisen.physics
-  ExpectedVisual: Authored bodies fall, collide with the floor and the pedestal, and come to rest.
+  ExpectedVisual: Authored bodies fall, collide with the floor and the pedestal, and come to rest while the character stands on the floor and walks with WASD.
   Gate: scene-smoke
   Artifact: visual-summary-PhysicsShowcase-latest.json

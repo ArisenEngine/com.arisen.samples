@@ -28,6 +28,10 @@ ComponentSchemas:
   Name: RigidBody
   Version: 1
   Required: false
+- TypeId: 1128813123
+  Name: CharacterController
+  Version: 1
+  Required: false
 Entities:
 - Guid: 42000000-0000-0000-0000-000000000001
   Name: Main Camera
@@ -138,3 +142,17 @@ Entities:
     HalfExtents: { X: 0.72, Y: 0.24, Z: 0.72 }
     Center: { X: 0.0, Y: 0.24, Z: 0.0 }
     Friction: 0.5
+- Guid: 42000000-0000-0000-0000-000000000009
+  Name: Showcase Character
+  Transform:
+    Position: { X: 0.0, Y: 0.0, Z: -2.0 }
+    Rotation: { X: 0.0, Y: 0.0, Z: 0.0, W: 1.0 }
+    Scale: { X: 1.0, Y: 1.0, Z: 1.0 }
+  MeshRenderer:
+    Mesh: { Guid: 5d3c9a12-4e77-4b08-9f21-7c86ab0e4d33, PackageId: com.arisen.samples }
+    Material: { Guid: a2dd1381-3958-4480-837b-35ffe6dd15c0, PackageId: com.arisen.samples }
+    Visible: true
+  CharacterController:
+    Radius: 0.35
+    HalfHeight: 0.8
+    MoveSpeed: 4.0
