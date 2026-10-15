@@ -40,7 +40,9 @@ Entities:
 - Guid: 43000000-0000-0000-0000-000000000002
   Name: Skinning Key Light
   DirectionalLight:
-    Direction: { X: -0.35, Y: 0.8, Z: -0.48 }
+    # The key light sits above the camera's shoulder, so the figure's shadow falls towards the
+    # viewer: the pose that deforms the lit mesh is the same pose its shadow casts.
+    Direction: { X: -0.35, Y: 0.8, Z: 0.48 }
     Color: { X: 1.0, Y: 0.95, Z: 0.87 }
     Intensity: 1.6
     AmbientIntensity: 0.12
