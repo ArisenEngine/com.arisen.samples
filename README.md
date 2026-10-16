@@ -43,12 +43,12 @@ A sample whose content needs behaviour is driven by a subsystem in this package:
 
 - `CharacterSkinningPoseSubsystem` drives the `character-skinning` entry: it reads the character
   mesh's cooked clip table and samples the current clip every frame into the entity's
-  `SkeletonPoseComponent`, which is the pose the frame's skin palette is built from. Clips are
-  addressed by name: the sample plays the baked walk clip the imported figure ships with
-  (`Clip_0`), and clips in a sequence cross-fade through the driver's blend window instead of
-  cutting. It binds only the entity that renders this package's character mesh, so every other
-  sample - and every product - sees an inert driver, and the mesh renders its cooked rest pose if
-  the driver never engages.
+  `SkeletonPoseComponent` - rotations and translations, so the walk keeps its hip bob - which is
+  the pose the frame's skin palette is built from. Clips are addressed by name: the sample plays
+  the baked walk clip the imported figure ships with (`Clip_0`), and clips in a sequence cross-fade
+  through the driver's blend window instead of cutting. It binds only the entity that renders this
+  package's character mesh, so every other sample - and every product - sees an inert driver, and
+  the mesh renders its cooked rest pose if the driver never engages.
 ## Sample content
 
 `character-skinning` is the first sample whose content is imported rather than authored here, and its

@@ -13,7 +13,8 @@ namespace ArisenEngine.Samples;
 /// <summary>
 /// Plays the skinning sample's character. The catalogue entry's scene renders the package's imported
 /// figure, whose cooked mesh carries its own skeleton and clips; this driver reads that payload
-/// once, then samples the current clip every frame and writes the resulting local rotations
+/// once, then samples the current clip every frame and writes the resulting local pose (rotations
+/// and translations - a walk's hip bob rides the root joint's translation track)
 /// into the entity's <see cref="SkeletonPoseComponent"/>, which is the pose the frame's skin palette
 /// is built from. A clip is addressed by its name, so the sample's sequence is content, not indices.
 ///
@@ -59,6 +60,8 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     private float m_ClipTime;
     private Quaternion[] m_PoseScratch = Array.Empty<Quaternion>();
     private Quaternion[] m_BlendFromPose = Array.Empty<Quaternion>();
+    private Vector3[] m_TranslationScratch = Array.Empty<Vector3>();
+    private Vector3[] m_BlendFromTranslations = Array.Empty<Vector3>();
     private float m_BlendRemaining;
 
     public int Priority => 40;
@@ -120,13 +123,15 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
             m_Animations!,
             m_ClipIndices[m_ClipCursor],
             m_ClipTime,
-            m_PoseScratch);
+            m_PoseScratch,
+            m_TranslationScratch);
         ApplyBlend(deltaTime);
 
         ref SkeletonPoseComponent pose = ref poses.GetRef(m_Target);
         for (int jointIndex = 0; jointIndex < m_PoseScratch.Length; jointIndex++)
         {
             pose.SetLocalRotation(jointIndex, m_PoseScratch[jointIndex]);
+            pose.SetLocalTranslation(jointIndex, m_TranslationScratch[jointIndex]);
         }
 
         LogPose();
@@ -145,6 +150,9 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         m_Animations = null;
         m_ClipIndices = Array.Empty<int>();
         m_PoseScratch = Array.Empty<Quaternion>();
+        m_BlendFromPose = Array.Empty<Quaternion>();
+        m_TranslationScratch = Array.Empty<Vector3>();
+        m_BlendFromTranslations = Array.Empty<Vector3>();
         m_ClipCursor = 0;
         m_ClipTime = 0.0f;
         m_Elapsed = 0.0f;
@@ -222,6 +230,8 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         m_ClipIndices = sequence.ToArray();
         m_PoseScratch = new Quaternion[m_Skin.Joints.Count];
         m_BlendFromPose = new Quaternion[m_Skin.Joints.Count];
+        m_TranslationScratch = new Vector3[m_Skin.Joints.Count];
+        m_BlendFromTranslations = new Vector3[m_Skin.Joints.Count];
         m_ClipCursor = 0;
         m_ClipTime = 0.0f;
     }
@@ -271,6 +281,7 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         m_ClipCursor = (m_ClipCursor + 1) % m_ClipIndices.Length;
         // The fade starts from the pose this frame has already drawn, so the switch never snaps.
         Array.Copy(m_PoseScratch, m_BlendFromPose, m_PoseScratch.Length);
+        Array.Copy(m_TranslationScratch, m_BlendFromTranslations, m_TranslationScratch.Length);
         m_BlendRemaining = BlendSeconds;
         MeshAnimationClip next = m_Animations.GetClip(m_ClipIndices[m_ClipCursor]);
         KernelLog.InfoFormat(
@@ -294,6 +305,10 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
             m_PoseScratch[jointIndex] = Quaternion.Slerp(
                 m_BlendFromPose[jointIndex],
                 m_PoseScratch[jointIndex],
+                blend);
+            m_TranslationScratch[jointIndex] = Vector3.Lerp(
+                m_BlendFromTranslations[jointIndex],
+                m_TranslationScratch[jointIndex],
                 blend);
         }
     }
