@@ -1,5 +1,17 @@
 # Third-party content
 
+## Cesium Man
+
+- Author: Cesium (<https://cesium.com>), as published in the Khronos glTF Sample Models
+  (<https://github.com/KhronosGroup/glTF-Sample-Models>, `2.0/CesiumMan`).
+- License: Creative Commons Attribution 4.0 (CC BY 4.0,
+  <https://creativecommons.org/licenses/by/4.0/>) - attribution required. The upstream sample also
+  documents Cesium's trademark and branding guidance for the model; the model is showcase content
+  only and does not imply any endorsement.
+
+`Assets/Meshes/CesiumMan.glb` is the unmodified Khronos sample asset and is the figure the
+`character-skinning` sample renders through the engine's skinning path.
+
 ## KayKit - Character Pack: Adventurers
 
 - Author: Kay Lousberg (<https://www.kaylousberg.com>, <https://kaylousberg.itch.io/kaykit-adventurers>)

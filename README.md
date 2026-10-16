@@ -44,19 +44,21 @@ A sample whose content needs behaviour is driven by a subsystem in this package:
 - `CharacterSkinningPoseSubsystem` drives the `character-skinning` entry: it reads the character
   mesh's cooked clip table and samples the current clip every frame into the entity's
   `SkeletonPoseComponent`, which is the pose the frame's skin palette is built from. Clips are
-  addressed by name, so the sample's sequence (Idle, Walking_A, Running_A, Jump_Full_Short, Cheer)
-  is content rather than indices. It binds only the entity that renders this package's character
-  mesh, so every other sample - and every product - sees an inert driver, and the mesh renders its
-  cooked rest pose if the driver never engages.
+  addressed by name: the sample plays the baked walk clip the imported figure ships with
+  (`Clip_0`), and clips in a sequence cross-fade through the driver's blend window instead of
+  cutting. It binds only the entity that renders this package's character mesh, so every other
+  sample - and every product - sees an inert driver, and the mesh renders its cooked rest pose if
+  the driver never engages.
 ## Sample content
 
-`character-skinning` is the first sample whose content is imported rather than authored here: the
-Knight is KayKit's CC0 *Character Pack: Adventurers* figure (see `THIRD_PARTY.md`), and
-`Arisen/Scripts/Windows/prepare_kaykit_character.py` turns the pack's `.glb` into the single skinned
-mesh the engine's mesh cook imports - one skin, one skinned node, 41 joints - keeping the pack's
-animation clips on that same skeleton and extracting the character's gradient atlas beside it. The
-cook bakes those clips into the mesh's payload as per-joint rotation tracks, so the sample plays clips
-authored for a real rig without a clip asset kind of its own.
+`character-skinning` is the first sample whose content is imported rather than authored here, and its
+figure is Cesium Man from the Khronos glTF Sample Models (see `THIRD_PARTY.md`): one skin, one
+skinned node, 19 joints, and one LINEAR walk clip - `Clip_0` - on the same skeleton. The cook bakes
+the clip's rotation channels into the mesh's payload as per-joint tracks, folding any non-joint
+wrappers between joints into the joint chain, so the sample plays a clip authored for a real rig
+without a clip asset kind of its own. KayKit's CC0 *Character Pack: Adventurers* figure ships beside
+it as the larger rig (41 joints, 76 clips) the sample was first built against, and stays in
+`Assets/Meshes/Knight.glb` for that work.
 ## The catalogue
 
 `Assets\Catalogue\ShowcaseSamples.arisensamples` is the single declaration of every sample. An entry
@@ -78,6 +80,9 @@ needs, the expected visual, and the gate scenario and artifact that prove it.
 
 The catalogue, the hub scene, the `Samples` profile, the `--startup-sample <id>` launch, and
 in-process switching between content samples are in place, and `character-skinning` is the first
-entry that carries a driver (the C1 skinning sample). The hub's browsing layer and the per-sample gate
-runners are the next items; the plan and the acceptance rules live in the engine repository at
+entry that carries a driver (the C1 skinning sample) and its own gate: `validate_runtime` launches
+this entry directly three times, requires the driver's bound-and-sampled log lines with the SKINNED
+pipeline variant, and requires the captured frames to differ so playback is proven moving - the
+catalogue's `Gate`/`Artifact` fields name exactly that run. The hub's browsing layer is the next
+item; the plan and the acceptance rules live in the engine repository at
 `Arisen\Docs\Architecture\ArisenDevelopmentRoadmap.md`.

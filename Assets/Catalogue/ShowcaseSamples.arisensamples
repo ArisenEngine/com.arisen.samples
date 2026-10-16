@@ -43,10 +43,10 @@ Samples:
   Gate: scene-smoke
   Artifact: visual-summary-PhysicsShowcase-latest.json
 - Id: character-skinning
-  Description: An imported game character posed at runtime - the C1 skeleton, cooked skin, and GPU skinning path as a sample.
+  Description: An imported game character walking its cooked clip - the C1 skeleton, cooked skin, and GPU skinning path as a sample.
   Scene:
     Guid: 1dcc0f14-5100-48eb-a279-271d165fae25
     PackageId: com.arisen.samples
-  ExpectedVisual: The knight plays the imported pack's clips in sequence - Idle, Walking_A, Running_A, Jump_Full_Short, Cheer - on the floor, drawn through the material's SKINNED pipeline variant and casting a shadow that follows the pose.
-  Gate: scene-smoke
+  ExpectedVisual: The imported figure walks its cooked clip loop on the showcase floor - an upright stride with swinging arms and a shadow that follows the pose - drawn through the material's SKINNED pipeline variant and driven by this package's own clip driver. A run whose driver never engages shows the imported rest pose instead.
+  Gate: character-skinning
   Artifact: visual-summary-Samples-character-skinning-latest.json
