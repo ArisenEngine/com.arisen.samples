@@ -13,8 +13,9 @@ namespace ArisenEngine.Samples;
 /// <summary>
 /// Plays the skinning sample's character. The catalogue entry's scene renders the package's imported
 /// figure, whose cooked mesh carries its own skeleton and clips; this driver reads that payload
-/// once, then samples the current clip every frame and writes the resulting local pose (rotations
-/// and translations - a walk's hip bob rides the root joint's translation track)
+/// once, then plays the clip through the engine's <see cref="MeshAnimationPlayer"/> and writes the
+/// resulting local pose (rotations and translations - a walk's hip bob rides the root joint's
+/// translation track)
 /// into the entity's <see cref="SkeletonPoseComponent"/>, which is the pose the frame's skin palette
 /// is built from. A clip is addressed by its name, so the sample's sequence is content, not indices.
 ///
@@ -55,14 +56,11 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
     private CookedAssetHandle m_CookedHandle = CookedAssetHandle.Invalid;
     private MeshSkin? m_Skin;
     private MeshAnimationTable? m_Animations;
+    private MeshAnimationPlayer? m_Player;
     private int[] m_ClipIndices = Array.Empty<int>();
     private int m_ClipCursor;
-    private float m_ClipTime;
     private Quaternion[] m_PoseScratch = Array.Empty<Quaternion>();
-    private Quaternion[] m_BlendFromPose = Array.Empty<Quaternion>();
     private Vector3[] m_TranslationScratch = Array.Empty<Vector3>();
-    private Vector3[] m_BlendFromTranslations = Array.Empty<Vector3>();
-    private float m_BlendRemaining;
 
     public int Priority => 40;
 
@@ -117,15 +115,13 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
             manager.AddComponent(m_Target, SkeletonPoseComponent.Create(m_Skin!.Joints.Count));
         }
 
-        AdvanceClip(deltaTime);
-        MeshAnimationSampler.SamplePose(
-            m_Skin!,
-            m_Animations!,
-            m_ClipIndices[m_ClipCursor],
-            m_ClipTime,
-            m_PoseScratch,
-            m_TranslationScratch);
-        ApplyBlend(deltaTime);
+        m_Player!.Advance(deltaTime);
+        if (m_Player.CompletedThisFrame)
+        {
+            AdvanceSequence();
+        }
+
+        m_Player.SamplePose(m_Skin!, m_PoseScratch, m_TranslationScratch);
 
         ref SkeletonPoseComponent pose = ref poses.GetRef(m_Target);
         for (int jointIndex = 0; jointIndex < m_PoseScratch.Length; jointIndex++)
@@ -148,13 +144,11 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         m_CookedHandle = CookedAssetHandle.Invalid;
         m_Skin = null;
         m_Animations = null;
+        m_Player = null;
         m_ClipIndices = Array.Empty<int>();
         m_PoseScratch = Array.Empty<Quaternion>();
-        m_BlendFromPose = Array.Empty<Quaternion>();
         m_TranslationScratch = Array.Empty<Vector3>();
-        m_BlendFromTranslations = Array.Empty<Vector3>();
         m_ClipCursor = 0;
-        m_ClipTime = 0.0f;
         m_Elapsed = 0.0f;
         m_NextPoseLogTime = 0.0f;
     }
@@ -229,11 +223,11 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
 
         m_ClipIndices = sequence.ToArray();
         m_PoseScratch = new Quaternion[m_Skin.Joints.Count];
-        m_BlendFromPose = new Quaternion[m_Skin.Joints.Count];
         m_TranslationScratch = new Vector3[m_Skin.Joints.Count];
-        m_BlendFromTranslations = new Vector3[m_Skin.Joints.Count];
         m_ClipCursor = 0;
-        m_ClipTime = 0.0f;
+        m_Player = new MeshAnimationPlayer(m_Animations);
+        // A one-clip sample loops; a sequence plays every clip once and advances on completion.
+        m_Player.Play(m_ClipIndices[0], 0.0f, loop: m_ClipIndices.Length == 1);
     }
 
     /// <summary>
@@ -268,49 +262,20 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
             _ => MeshSourceFormat.ArisenTextMesh,
         };
 
-    private void AdvanceClip(float deltaTime)
+    /// <summary>
+    /// The sequence advances when the playing clip completes; the engine player cross-fades into the
+    /// next clip, so the switch never snaps. A one-clip sample loops instead and never completes.
+    /// </summary>
+    private void AdvanceSequence()
     {
-        m_ClipTime += deltaTime;
-        MeshAnimationClip clip = m_Animations!.GetClip(m_ClipIndices[m_ClipCursor]);
-        if (m_ClipIndices.Length == 1 || clip.Duration <= 0.0f || m_ClipTime < clip.Duration)
-        {
-            return;
-        }
-
-        m_ClipTime -= clip.Duration;
         m_ClipCursor = (m_ClipCursor + 1) % m_ClipIndices.Length;
-        // The fade starts from the pose this frame has already drawn, so the switch never snaps.
-        Array.Copy(m_PoseScratch, m_BlendFromPose, m_PoseScratch.Length);
-        Array.Copy(m_TranslationScratch, m_BlendFromTranslations, m_TranslationScratch.Length);
-        m_BlendRemaining = BlendSeconds;
-        MeshAnimationClip next = m_Animations.GetClip(m_ClipIndices[m_ClipCursor]);
+        m_Player!.Play(m_ClipIndices[m_ClipCursor], BlendSeconds, loop: false);
+        MeshAnimationClip next = m_Animations!.GetClip(m_ClipIndices[m_ClipCursor]);
         KernelLog.InfoFormat(
             "[CharacterSkinning] Clip '{0}' ({1:0.###}s, {2} track(s)).",
             next.Name,
             next.Duration,
             next.TrackCount);
-    }
-
-    private void ApplyBlend(float deltaTime)
-    {
-        if (m_BlendRemaining <= 0.0f)
-        {
-            return;
-        }
-
-        m_BlendRemaining = MathF.Max(0.0f, m_BlendRemaining - deltaTime);
-        float blend = 1.0f - m_BlendRemaining / BlendSeconds;
-        for (int jointIndex = 0; jointIndex < m_PoseScratch.Length; jointIndex++)
-        {
-            m_PoseScratch[jointIndex] = Quaternion.Slerp(
-                m_BlendFromPose[jointIndex],
-                m_PoseScratch[jointIndex],
-                blend);
-            m_TranslationScratch[jointIndex] = Vector3.Lerp(
-                m_BlendFromTranslations[jointIndex],
-                m_TranslationScratch[jointIndex],
-                blend);
-        }
     }
 
     /// <summary>
@@ -325,12 +290,12 @@ public sealed class CharacterSkinningPoseSubsystem : ITickableSubsystem
         }
 
         m_NextPoseLogTime = m_Elapsed + PoseLogIntervalSeconds;
-        MeshAnimationClip clip = m_Animations!.GetClip(m_ClipIndices[m_ClipCursor]);
+        MeshAnimationClip clip = m_Player!.CurrentClip;
         KernelLog.InfoFormat(
             "[CharacterSkinning] Clip '{0}' | Elapsed: {1:F2}s | Clip time: {2:F2}s / {3:F2}s",
             clip.Name,
             m_Elapsed,
-            m_ClipTime,
+            m_Player.CurrentTime,
             clip.Duration);
     }
 

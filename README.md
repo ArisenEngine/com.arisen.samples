@@ -45,8 +45,9 @@ A sample whose content needs behaviour is driven by a subsystem in this package:
   mesh's cooked clip table and samples the current clip every frame into the entity's
   `SkeletonPoseComponent` - rotations and translations, so the walk keeps its hip bob - which is
   the pose the frame's skin palette is built from. Clips are addressed by name: the sample plays
-  the baked walk clip the imported figure ships with (`Clip_0`), and clips in a sequence cross-fade
-  through the driver's blend window instead of cutting. It binds only the entity that renders this
+  the baked walk clip the imported figure ships with (`Clip_0`), and a sequence cross-fades
+  through the engine's `MeshAnimationPlayer` - the driver only picks names and fade length. It
+  binds only the entity that renders this
   package's character mesh, so every other sample - and every product - sees an inert driver, and
   the mesh renders its cooked rest pose if the driver never engages.
 ## Sample content
