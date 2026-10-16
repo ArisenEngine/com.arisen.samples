@@ -1,7 +1,7 @@
 # The skinning sample: an imported game character on the showcase floor. The mesh is drawn through
-# its material's SKINNED variant and its head and shoulders are posed by com.arisen.samples' own
-# driver, so a run whose driver never engages shows the imported T-pose - arms straight out - and a
-# run that skinning works in shows the character standing with its arms at its sides.
+# its material's SKINNED variant and its clip is sampled by com.arisen.samples' own driver, so a
+# run whose driver never engages shows the imported rest pose - arms straight out - and a run that
+# skinning works in shows the character walking through its cooked clip.
 Version: 2
 Name: Character Skinning
 ComponentSchemas:
